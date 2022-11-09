@@ -97,26 +97,35 @@ class RecordablePath : Path() {
 
     override fun rewind() {
         super.rewind()
+        commands.add(Rewind())
     }
 
     override fun incReserve(extraPtCount: Int) {
         super.incReserve(extraPtCount)
+        commands.add(IncReserve(extraPtCount))
     }
 
     override fun toggleInverseFillType() {
         super.toggleInverseFillType()
+        commands.add(ToggleInverseFillType())
     }
 
-    override fun arcTo(left: Float, top: Float, right: Float, bottom: Float, startAngle: Float, sweepAngle: Float, forceMoveTo: Boolean) {
+    override fun arcTo(
+        left: Float,
+        top: Float,
+        right: Float,
+        bottom: Float,
+        startAngle: Float,
+        sweepAngle: Float,
+        forceMoveTo: Boolean
+    ) {
         super.arcTo(left, top, right, bottom, startAngle, sweepAngle, forceMoveTo)
+        commands.add(ArcTo(left, top, right, bottom, startAngle, sweepAngle, forceMoveTo))
     }
 
     override fun offset(dx: Float, dy: Float) {
         super.offset(dx, dy)
-    }
-
-    override fun offset(dx: Float, dy: Float, dst: Path?) {
-        super.offset(dx, dy, dst)
+        commands.add(Offset(dx, dy))
     }
 
     override fun quadTo(x1: Float, y1: Float, x2: Float, y2: Float) {
