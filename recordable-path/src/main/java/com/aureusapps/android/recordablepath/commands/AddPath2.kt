@@ -1,19 +1,22 @@
 package com.aureusapps.android.recordablepath.commands
 
+import android.graphics.Matrix
 import android.graphics.Path
+import com.aureusapps.android.recordablepath.RecordablePath
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @Serializable
-internal class MoveTo(
-    private val x: Float,
-    private val y: Float
+internal class AddPath2(
+    private val path: RecordablePath,
+    @Contextual private val matrix: Matrix
 ) : Command {
 
     override fun execute(path: Path) {
-        path.moveTo(x, y)
+        path.addPath(this.path, matrix)
     }
 
     override fun toJson(): String {
@@ -21,7 +24,7 @@ internal class MoveTo(
     }
 
     companion object {
-        fun fromJson(json: String): MoveTo {
+        fun fromJson(json: String): AddPath2 {
             return Json.decodeFromString(json)
         }
     }

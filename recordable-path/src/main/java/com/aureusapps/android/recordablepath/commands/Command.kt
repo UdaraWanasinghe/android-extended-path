@@ -5,5 +5,5 @@ import org.json.JSONObject
 
 internal interface Command {
     fun execute(path: Path)
-    fun toJson(): JSONObject
+    fun toJson(): String
 }

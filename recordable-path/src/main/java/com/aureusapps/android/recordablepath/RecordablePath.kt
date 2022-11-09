@@ -3,7 +3,9 @@ package com.aureusapps.android.recordablepath
 import android.graphics.Matrix
 import android.graphics.Path
 import com.aureusapps.android.recordablepath.commands.*
+import kotlinx.serialization.Serializable
 
+@Serializable
 class RecordablePath : Path() {
 
     private val commands = mutableListOf<Command>()
@@ -45,7 +47,7 @@ class RecordablePath : Path() {
 
     override fun addCircle(x: Float, y: Float, radius: Float, dir: Direction) {
         super.addCircle(x, y, radius, dir)
-        commands.add(AddCircle(x, y, dir))
+        commands.add(AddCircle(x, y, radius, dir))
     }
 
     override fun reset() {
@@ -78,8 +80,9 @@ class RecordablePath : Path() {
         commands.add(AddOval(left, top, right, bottom, dir))
     }
 
-    override fun addPath(src: Path) {
+    fun addPath(src: RecordablePath) {
         super.addPath(src)
+        commands.add(AddPath1(src))
     }
 
     override fun addPath(src: Path, matrix: Matrix) {

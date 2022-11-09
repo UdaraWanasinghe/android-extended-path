@@ -1,18 +1,26 @@
 package com.aureusapps.android.recordablepath.commands
 
 import android.graphics.Path
-import org.json.JSONObject
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
-internal class Close: Command {
+@Serializable
+internal class Close : Command {
 
     override fun execute(path: Path) {
         path.close()
     }
 
-    override fun toJson(): JSONObject {
-        return JSONObject(
-            """{"Close":{}}"""
-        )
+    override fun toJson(): String {
+        return Json.encodeToString(this)
+    }
+
+    companion object {
+        fun fromJson(json: String): Close {
+            return Json.decodeFromString(json)
+        }
     }
 
 }
