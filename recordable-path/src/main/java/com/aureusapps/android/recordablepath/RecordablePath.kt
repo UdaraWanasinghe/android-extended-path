@@ -85,12 +85,14 @@ class RecordablePath : Path() {
         commands.add(AddPath1(src))
     }
 
-    override fun addPath(src: Path, matrix: Matrix) {
+    fun addPath(src: RecordablePath, matrix: Matrix) {
         super.addPath(src, matrix)
+        commands.add(AddPath2(src, matrix))
     }
 
-    override fun addPath(src: Path, dx: Float, dy: Float) {
+    fun addPath(src: RecordablePath, dx: Float, dy: Float) {
         super.addPath(src, dx, dy)
+        commands.add(AddPath3(src, dx, dy))
     }
 
     override fun rewind() {
