@@ -5,7 +5,7 @@ import com.aureusapps.android.recordablepath.MatrixAsFloatArray
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal class Transform2(
+internal class Transform(
     private val matrix: MatrixAsFloatArray
 ) : PathCommand {
 

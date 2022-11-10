@@ -5,12 +5,13 @@ import android.graphics.Path
 import com.aureusapps.android.recordablepath.commands.*
 import com.aureusapps.android.recordablepath.commands.Set
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @Serializable
-class RecordablePath : Path() {
+class RecordablePath {
 
     companion object {
         fun fromJson(json: String): RecordablePath {
@@ -18,41 +19,40 @@ class RecordablePath : Path() {
         }
     }
 
+    @Transient
+    val path = Path()
+
     internal var commands: MutableList<PathCommand> = mutableListOf()
 
     init {
-        if (commands.size > 0) {
-            val list = commands
-            commands = mutableListOf()
-            list.forEach { it.execute(this) }
-        }
+        commands.forEach { it.execute(path) }
     }
 
     fun toJson(): String {
         return Json.encodeToString(this)
     }
 
-    override fun moveTo(x: Float, y: Float) {
-        super.moveTo(x, y)
+    fun moveTo(x: Float, y: Float) {
+        path.moveTo(x, y)
         commands.add(MoveTo(x, y))
     }
 
-    override fun rMoveTo(dx: Float, dy: Float) {
-        super.rMoveTo(dx, dy)
+    fun rMoveTo(dx: Float, dy: Float) {
+        path.rMoveTo(dx, dy)
         commands.add(RMoveTo(dx, dy))
     }
 
-    override fun lineTo(x: Float, y: Float) {
-        super.lineTo(x, y)
+    fun lineTo(x: Float, y: Float) {
+        path.lineTo(x, y)
         commands.add(LineTo(x, y))
     }
 
-    override fun rLineTo(dx: Float, dy: Float) {
-        super.rLineTo(dx, dy)
+    fun rLineTo(dx: Float, dy: Float) {
+        path.rLineTo(dx, dy)
         commands.add(RLineTo(dx, dy))
     }
 
-    override fun cubicTo(
+    fun cubicTo(
         x1: Float,
         y1: Float,
         x2: Float,
@@ -60,11 +60,11 @@ class RecordablePath : Path() {
         x3: Float,
         y3: Float
     ) {
-        super.cubicTo(x1, y1, x2, y2, x3, y3)
+        path.cubicTo(x1, y1, x2, y2, x3, y3)
         commands.add(CubicTo(x1, y1, x2, y2, x3, y3))
     }
 
-    override fun rCubicTo(
+    fun rCubicTo(
         x1: Float,
         y1: Float,
         x2: Float,
@@ -72,57 +72,57 @@ class RecordablePath : Path() {
         x3: Float,
         y3: Float
     ) {
-        super.rCubicTo(x1, y1, x2, y2, x3, y3)
+        path.rCubicTo(x1, y1, x2, y2, x3, y3)
         commands.add(RCubicTo(x1, y1, x2, y2, x3, y3))
     }
 
-    override fun addCircle(
+    fun addCircle(
         x: Float,
         y: Float,
         radius: Float,
-        dir: Direction
+        dir: Path.Direction
     ) {
-        super.addCircle(x, y, radius, dir)
+        path.addCircle(x, y, radius, dir)
         commands.add(AddCircle(x, y, radius, dir))
     }
 
-    override fun addRect(
+    fun addRect(
         left: Float,
         top: Float,
         right: Float,
         bottom: Float,
-        dir: Direction
+        dir: Path.Direction
     ) {
-        super.addRect(left, top, right, bottom, dir)
+        path.addRect(left, top, right, bottom, dir)
         commands.add(AddRect(left, top, right, bottom, dir))
     }
 
-    override fun addRoundRect(
+    fun addRoundRect(
         left: Float,
         top: Float,
         right: Float,
         bottom: Float,
         radii: FloatArray,
-        dir: Direction
+        dir: Path.Direction
     ) {
-        super.addRoundRect(left, top, right, bottom, radii, dir)
+        path.addRoundRect(left, top, right, bottom, radii, dir)
         commands.add(AddRoundRect1(left, top, right, bottom, radii, dir))
     }
 
-    override fun addRoundRect(
+    fun addRoundRect(
         left: Float,
         top: Float,
         right: Float,
         bottom: Float,
         rx: Float,
         ry: Float,
-        dir: Direction
+        dir: Path.Direction
     ) {
-        super.addRoundRect(left, top, right, bottom, rx, ry, dir)
+        path.addRoundRect(left, top, right, bottom, rx, ry, dir)
         commands.add(AddRoundRect2(left, top, right, bottom, rx, ry, dir))
     }
 
-    override fun addArc(
+    fun addArc(
         left: Float,
         top: Float,
         right: Float,
@@ -130,7 +130,7 @@ class RecordablePath : Path() {
         startAngle: Float,
         sweepAngle: Float
     ) {
-        super.addArc(
+        path.addArc(
             left,
             top,
             right,
@@ -141,7 +141,7 @@ class RecordablePath : Path() {
         commands.add(AddArc(left, top, right, bottom, startAngle, sweepAngle))
     }
 
-    override fun arcTo(
+    fun arcTo(
         left: Float,
         top: Float,
         right: Float,
@@ -150,7 +150,7 @@ class RecordablePath : Path() {
         sweepAngle: Float,
         forceMoveTo: Boolean
     ) {
-        super.arcTo(
+        path.arcTo(
             left,
             top,
             right,
@@ -162,19 +162,19 @@ class RecordablePath : Path() {
         commands.add(ArcTo(left, top, right, bottom, startAngle, sweepAngle, forceMoveTo))
     }
 
-    override fun addOval(
+    fun addOval(
         left: Float,
         top: Float,
         right: Float,
         bottom: Float,
-        dir: Direction
+        dir: Path.Direction
     ) {
-        super.addOval(left, top, right, bottom, dir)
+        path.addOval(left, top, right, bottom, dir)
         commands.add(AddOval(left, top, right, bottom, dir))
     }
 
     fun addPath(src: RecordablePath) {
-        super.addPath(src)
+        path.addPath(src.path)
         commands.add(AddPath1(src))
     }
 
@@ -182,7 +182,7 @@ class RecordablePath : Path() {
         src: RecordablePath,
         matrix: Matrix
     ) {
-        super.addPath(src, matrix)
+        path.addPath(src.path, matrix)
         commands.add(AddPath2(src, matrix))
     }
 
@@ -191,82 +191,77 @@ class RecordablePath : Path() {
         dx: Float,
         dy: Float
     ) {
-        super.addPath(src, dx, dy)
+        path.addPath(src.path, dx, dy)
         commands.add(AddPath3(src, dx, dy))
     }
 
-    override fun offset(dx: Float, dy: Float) {
-        super.offset(dx, dy)
+    fun offset(dx: Float, dy: Float) {
+        path.offset(dx, dy)
         commands.add(Offset(dx, dy))
     }
 
-    override fun quadTo(
+    fun quadTo(
         x1: Float,
         y1: Float,
         x2: Float,
         y2: Float
     ) {
-        super.quadTo(x1, y1, x2, y2)
+        path.quadTo(x1, y1, x2, y2)
         commands.add(QuadTo(x1, y1, x2, y2))
     }
 
-    override fun rQuadTo(
+    fun rQuadTo(
         dx1: Float,
         dy1: Float,
         dx2: Float,
         dy2: Float
     ) {
-        super.rQuadTo(dx1, dy1, dx2, dy2)
+        path.rQuadTo(dx1, dy1, dx2, dy2)
         commands.add(RQuadTo(dx1, dy1, dx2, dy2))
     }
 
-    override fun setFillType(ft: FillType) {
-        super.setFillType(ft)
+    fun setFillType(ft: Path.FillType) {
+        path.fillType = ft
         commands.add(SetFillType(ft))
     }
 
-    override fun setLastPoint(dx: Float, dy: Float) {
-        super.setLastPoint(dx, dy)
+    fun setLastPoint(dx: Float, dy: Float) {
+        path.setLastPoint(dx, dy)
         commands.add(SetLastPoint(dx, dy))
     }
 
-    override fun incReserve(extraPtCount: Int) {
-        super.incReserve(extraPtCount)
+    fun incReserve(extraPtCount: Int) {
+        path.incReserve(extraPtCount)
         commands.add(IncReserve(extraPtCount))
     }
 
-    override fun toggleInverseFillType() {
-        super.toggleInverseFillType()
+    fun toggleInverseFillType() {
+        path.toggleInverseFillType()
         commands.add(ToggleInverseFillType)
     }
 
-    fun transform(matrix: Matrix, dst: RecordablePath?) {
-        super.transform(matrix, dst)
-        commands.add(Transform1(matrix, dst))
-    }
-
-    override fun transform(matrix: Matrix) {
-        super.transform(matrix)
-        commands.add(Transform2(matrix))
+    fun transform(matrix: Matrix) {
+        path.transform(matrix)
+        commands.add(Transform(matrix))
     }
 
     fun set(src: RecordablePath) {
-        super.set(src)
+        path.set(src.path)
         commands.add(Set(src))
     }
 
-    override fun rewind() {
-        super.rewind()
+    fun rewind() {
+        path.rewind()
         commands.add(Rewind)
     }
 
-    override fun close() {
-        super.close()
+    fun close() {
+        path.close()
         commands.add(Close)
     }
 
-    override fun reset() {
-        super.reset()
+    fun reset() {
+        path.reset()
         commands.clear()
     }
 

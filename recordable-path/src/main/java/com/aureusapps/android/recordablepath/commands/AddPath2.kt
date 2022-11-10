@@ -12,7 +12,7 @@ internal class AddPath2(
 ) : PathCommand {
 
     override fun execute(path: Path) {
-        path.addPath(this.path, matrix)
+        path.addPath(this.path.path, matrix)
     }
 
 }

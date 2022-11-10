@@ -10,7 +10,7 @@ internal class Set(
 ) : PathCommand {
 
     override fun execute(path: Path) {
-        path.set(this.path)
+        path.set(this.path.path)
     }
 
 }

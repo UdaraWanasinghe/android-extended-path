@@ -12,7 +12,7 @@ internal class AddPath3(
 ) : PathCommand {
 
     override fun execute(path: Path) {
-        path.addPath(this.path, dx, dy)
+        path.addPath(this.path.path, dx, dy)
     }
 
 }
