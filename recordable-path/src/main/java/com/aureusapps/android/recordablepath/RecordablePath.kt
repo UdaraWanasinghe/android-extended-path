@@ -242,7 +242,12 @@ class RecordablePath {
 
     fun transform(matrix: Matrix) {
         path.transform(matrix)
-        commands.add(Transform(matrix))
+        commands.add(Transform1(matrix))
+    }
+
+    fun transform(matrix: Matrix, dst: RecordablePath) {
+        path.transform(matrix, dst.path)
+        commands.add(Transform2(matrix, dst))
     }
 
     fun set(src: RecordablePath) {
