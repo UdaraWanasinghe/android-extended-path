@@ -6,6 +6,6 @@ import org.junit.runners.Suite
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
     MatrixSerializerInstrumentedTest::class,
-    RecordablePathInstrumentedTest::class
+    SerializablePathInstrumentedTest::class
 )
-class RecordablePathInstrumentedTests
+class SerializablePathInstrumentedTests

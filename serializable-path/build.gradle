@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace 'com.aureusapps.android.recordablepath'
+    namespace 'com.aureusapps.android.serializablepath'
     compileSdk 33
 
     defaultConfig {

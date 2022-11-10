@@ -11,11 +11,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class RecordablePathInstrumentedTest {
+class SerializablePathInstrumentedTest {
 
     @Test
-    fun testRecordablePath() {
-        val path = RecordablePath()
+    fun testSerializablePath() {
+        val path = SerializablePath()
         path.moveTo(0f, 0f)
         path.lineTo(100f, 100f)
         val json = Json.encodeToString(path)
@@ -23,7 +23,7 @@ class RecordablePathInstrumentedTest {
             """{"commands":[{"type":"${MoveTo::class.qualifiedName}","x":0.0,"y":0.0},{"type":"${LineTo::class.qualifiedName}","x":100.0,"y":100.0}]}""".trimMargin(),
             json
         )
-        val path2 = RecordablePath.fromJson(json)
+        val path2 = SerializablePath.fromJson(json)
         path.addPath(path2)
         val json2 = Json.encodeToString(path)
         Assert.assertEquals(

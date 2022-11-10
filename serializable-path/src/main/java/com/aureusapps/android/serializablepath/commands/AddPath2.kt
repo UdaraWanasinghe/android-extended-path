@@ -2,12 +2,12 @@ package com.aureusapps.android.serializablepath.commands
 
 import android.graphics.Path
 import com.aureusapps.android.serializablepath.MatrixAsFloatArray
-import com.aureusapps.android.serializablepath.RecordablePath
+import com.aureusapps.android.serializablepath.SerializablePath
 import kotlinx.serialization.Serializable
 
 @Serializable
 internal class AddPath2(
-    private val path: RecordablePath,
+    private val path: SerializablePath,
     private val matrix: MatrixAsFloatArray
 ) : PathCommand {
 

@@ -11,10 +11,10 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @Serializable
-class RecordablePath {
+class SerializablePath {
 
     companion object {
-        fun fromJson(json: String): RecordablePath {
+        fun fromJson(json: String): SerializablePath {
             return Json.decodeFromString(json)
         }
     }
@@ -173,13 +173,13 @@ class RecordablePath {
         commands.add(AddOval(left, top, right, bottom, dir))
     }
 
-    fun addPath(src: RecordablePath) {
+    fun addPath(src: SerializablePath) {
         path.addPath(src.path)
         commands.add(AddPath1(src))
     }
 
     fun addPath(
-        src: RecordablePath,
+        src: SerializablePath,
         matrix: Matrix
     ) {
         path.addPath(src.path, matrix)
@@ -187,7 +187,7 @@ class RecordablePath {
     }
 
     fun addPath(
-        src: RecordablePath,
+        src: SerializablePath,
         dx: Float,
         dy: Float
     ) {
@@ -245,12 +245,12 @@ class RecordablePath {
         commands.add(Transform1(matrix))
     }
 
-    fun transform(matrix: Matrix, dst: RecordablePath) {
+    fun transform(matrix: Matrix, dst: SerializablePath) {
         path.transform(matrix, dst.path)
         commands.add(Transform2(matrix, dst))
     }
 
-    fun set(src: RecordablePath) {
+    fun set(src: SerializablePath) {
         path.set(src.path)
         commands.add(Set(src))
     }
