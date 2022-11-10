@@ -2,9 +2,6 @@ package com.aureusapps.android.recordablepath.commands
 
 import android.graphics.Path
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 @Serializable
 internal class MoveTo(
@@ -14,16 +11,6 @@ internal class MoveTo(
 
     override fun execute(path: Path) {
         path.moveTo(x, y)
-    }
-
-    override fun toJson(): String {
-        return Json.encodeToString(this)
-    }
-
-    companion object {
-        fun fromJson(json: String): MoveTo {
-            return Json.decodeFromString(json)
-        }
     }
 
 }

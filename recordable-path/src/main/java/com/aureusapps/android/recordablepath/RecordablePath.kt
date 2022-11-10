@@ -3,16 +3,34 @@ package com.aureusapps.android.recordablepath
 import android.graphics.Matrix
 import android.graphics.Path
 import com.aureusapps.android.recordablepath.commands.*
+import com.aureusapps.android.recordablepath.commands.Set
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Serializable
-class RecordablePath : Path() {
+class RecordablePath(
+    private var commands: MutableList<Command> = mutableListOf()
+) : Path() {
 
-    private val commands = mutableListOf<Command>()
+    companion object {
+        fun fromJson(json: String): RecordablePath {
+            return Json.decodeFromString(json)
+        }
+    }
+
+    init {
+        commands.forEach { it.execute(this) }
+    }
+
+    fun toJson(): String {
+        return Json.encodeToString(this)
+    }
 
     override fun close() {
         super.close()
-        commands.add(Close())
+        commands.add(Close)
     }
 
     override fun moveTo(x: Float, y: Float) {
@@ -65,17 +83,45 @@ class RecordablePath : Path() {
         commands.add(AddRoundRect1(left, top, right, bottom, radii, dir))
     }
 
-    override fun addRoundRect(left: Float, top: Float, right: Float, bottom: Float, rx: Float, ry: Float, dir: Direction) {
+    override fun addRoundRect(
+        left: Float,
+        top: Float,
+        right: Float,
+        bottom: Float,
+        rx: Float,
+        ry: Float,
+        dir: Direction
+    ) {
         super.addRoundRect(left, top, right, bottom, rx, ry, dir)
         commands.add(AddRoundRect2(left, top, right, bottom, rx, ry, dir))
     }
 
-    override fun addArc(left: Float, top: Float, right: Float, bottom: Float, startAngle: Float, sweepAngle: Float) {
-        super.addArc(left, top, right, bottom, startAngle, sweepAngle)
+    override fun addArc(
+        left: Float,
+        top: Float,
+        right: Float,
+        bottom: Float,
+        startAngle: Float,
+        sweepAngle: Float
+    ) {
+        super.addArc(
+            left,
+            top,
+            right,
+            bottom,
+            startAngle,
+            sweepAngle
+        )
         commands.add(AddArc(left, top, right, bottom, startAngle, sweepAngle))
     }
 
-    override fun addOval(left: Float, top: Float, right: Float, bottom: Float, dir: Direction) {
+    override fun addOval(
+        left: Float,
+        top: Float,
+        right: Float,
+        bottom: Float,
+        dir: Direction
+    ) {
         super.addOval(left, top, right, bottom, dir)
         commands.add(AddOval(left, top, right, bottom, dir))
     }
@@ -97,7 +143,7 @@ class RecordablePath : Path() {
 
     override fun rewind() {
         super.rewind()
-        commands.add(Rewind())
+        commands.add(Rewind)
     }
 
     override fun incReserve(extraPtCount: Int) {
@@ -107,7 +153,7 @@ class RecordablePath : Path() {
 
     override fun toggleInverseFillType() {
         super.toggleInverseFillType()
-        commands.add(ToggleInverseFillType())
+        commands.add(ToggleInverseFillType)
     }
 
     override fun arcTo(
@@ -119,7 +165,15 @@ class RecordablePath : Path() {
         sweepAngle: Float,
         forceMoveTo: Boolean
     ) {
-        super.arcTo(left, top, right, bottom, startAngle, sweepAngle, forceMoveTo)
+        super.arcTo(
+            left,
+            top,
+            right,
+            bottom,
+            startAngle,
+            sweepAngle,
+            forceMoveTo
+        )
         commands.add(ArcTo(left, top, right, bottom, startAngle, sweepAngle, forceMoveTo))
     }
 
@@ -128,32 +182,49 @@ class RecordablePath : Path() {
         commands.add(Offset(dx, dy))
     }
 
-    override fun quadTo(x1: Float, y1: Float, x2: Float, y2: Float) {
+    override fun quadTo(
+        x1: Float,
+        y1: Float,
+        x2: Float,
+        y2: Float
+    ) {
         super.quadTo(x1, y1, x2, y2)
+        commands.add(QuadTo(x1, y1, x2, y2))
+    }
+
+    override fun rQuadTo(
+        dx1: Float,
+        dy1: Float,
+        dx2: Float,
+        dy2: Float
+    ) {
+        super.rQuadTo(dx1, dy1, dx2, dy2)
+        commands.add(RQuadTo(dx1, dy1, dx2, dy2))
     }
 
     override fun setFillType(ft: FillType) {
         super.setFillType(ft)
-    }
-
-    override fun rQuadTo(dx1: Float, dy1: Float, dx2: Float, dy2: Float) {
-        super.rQuadTo(dx1, dy1, dx2, dy2)
+        commands.add(SetFillType(ft))
     }
 
     override fun setLastPoint(dx: Float, dy: Float) {
         super.setLastPoint(dx, dy)
+        commands.add(SetLastPoint(dx, dy))
     }
 
-    override fun transform(matrix: Matrix, dst: Path?) {
+    fun transform(matrix: Matrix, dst: RecordablePath?) {
         super.transform(matrix, dst)
-    }
-
-    fun set(src: RecordablePath) {
-        super.set(src)
+        commands.add(Transform1(matrix, dst))
     }
 
     override fun transform(matrix: Matrix) {
         super.transform(matrix)
+        commands.add(Transform2(matrix))
+    }
+
+    fun set(src: RecordablePath) {
+        super.set(src)
+        commands.add(Set(src))
     }
 
 }

@@ -4,13 +4,13 @@ import android.graphics.Path
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal class RMoveTo(
-    private val dx: Float,
-    private val dy: Float
+internal class SetLastPoint(
+    private val x: Float,
+    private val y: Float
 ) : Command {
 
     override fun execute(path: Path) {
-        path.rMoveTo(dx, dy)
+        path.setLastPoint(x, y)
     }
 
 }

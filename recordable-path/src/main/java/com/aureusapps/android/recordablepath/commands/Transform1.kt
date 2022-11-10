@@ -6,13 +6,13 @@ import com.aureusapps.android.recordablepath.RecordablePath
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal class AddPath2(
-    private val path: RecordablePath,
-    private val matrix: MatrixAsFloatArray
+internal class Transform1(
+    private val matrix: MatrixAsFloatArray,
+    private val path: RecordablePath?
 ) : Command {
 
     override fun execute(path: Path) {
-        path.addPath(this.path, matrix)
+        path.transform(matrix, this.path)
     }
 
 }

@@ -2,17 +2,15 @@ package com.aureusapps.android.recordablepath.commands
 
 import android.graphics.Path
 import com.aureusapps.android.recordablepath.MatrixAsFloatArray
-import com.aureusapps.android.recordablepath.RecordablePath
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal class AddPath2(
-    private val path: RecordablePath,
+internal class Transform2(
     private val matrix: MatrixAsFloatArray
 ) : Command {
 
     override fun execute(path: Path) {
-        path.addPath(this.path, matrix)
+        path.transform(matrix)
     }
 
 }

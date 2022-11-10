@@ -4,13 +4,15 @@ import android.graphics.Path
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal class RMoveTo(
-    private val dx: Float,
-    private val dy: Float
+internal class QuadTo(
+    private val x1: Float,
+    private val y1: Float,
+    private val x2: Float,
+    private val y2: Float
 ) : Command {
 
     override fun execute(path: Path) {
-        path.rMoveTo(dx, dy)
+        path.quadTo(x1, y1, x2, y2)
     }
 
 }
