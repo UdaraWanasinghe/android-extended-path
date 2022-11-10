@@ -4,6 +4,6 @@ import android.graphics.Path
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface PathCommand {
+internal sealed interface PathCommand {
     fun execute(path: Path)
 }

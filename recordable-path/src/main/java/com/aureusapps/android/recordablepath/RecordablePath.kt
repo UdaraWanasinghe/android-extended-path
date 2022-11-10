@@ -10,15 +10,15 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @Serializable
-class RecordablePath(
-    private var commands: MutableList<PathCommand> = mutableListOf()
-) : Path() {
+class RecordablePath : Path() {
 
     companion object {
         fun fromJson(json: String): RecordablePath {
             return Json.decodeFromString(json)
         }
     }
+
+    internal var commands: MutableList<PathCommand> = mutableListOf()
 
     init {
         if (commands.size > 0) {

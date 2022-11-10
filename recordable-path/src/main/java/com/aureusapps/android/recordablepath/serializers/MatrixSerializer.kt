@@ -11,7 +11,7 @@ import kotlinx.serialization.encoding.Encoder
 
 @OptIn(ExperimentalSerializationApi::class)
 
-class MatrixSerializer : KSerializer<Matrix> {
+internal class MatrixSerializer : KSerializer<Matrix> {
     private val delegateSerializer = FloatArraySerializer()
 
     override fun deserialize(decoder: Decoder): Matrix {
