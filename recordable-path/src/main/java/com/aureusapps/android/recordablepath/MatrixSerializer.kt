@@ -1,4 +1,4 @@
-package com.aureusapps.android.recordablepath.serializers
+package com.aureusapps.android.recordablepath
 
 import android.graphics.Matrix
 import androidx.core.graphics.values
