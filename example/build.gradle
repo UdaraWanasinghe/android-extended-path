@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.aureusapps.android.recordablepath.example'
+    namespace 'com.aureusapps.android.serializablepath.example'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.aureusapps.android.recordablepath.example"
+        applicationId "com.aureusapps.android.serializablepath.example"
         minSdk 21
         targetSdk 33
         versionCode 1
