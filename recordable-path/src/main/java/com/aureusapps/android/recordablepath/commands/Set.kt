@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal class Set(
     private val path: RecordablePath
-) : Command {
+) : PathCommand {
 
     override fun execute(path: Path) {
         path.set(this.path)

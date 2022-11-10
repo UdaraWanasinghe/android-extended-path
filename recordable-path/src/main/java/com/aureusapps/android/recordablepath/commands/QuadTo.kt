@@ -9,7 +9,7 @@ internal class QuadTo(
     private val y1: Float,
     private val x2: Float,
     private val y2: Float
-) : Command {
+) : PathCommand {
 
     override fun execute(path: Path) {
         path.quadTo(x1, y1, x2, y2)

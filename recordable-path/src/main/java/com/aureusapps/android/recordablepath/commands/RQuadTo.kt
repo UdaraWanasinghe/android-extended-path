@@ -9,7 +9,7 @@ internal class RQuadTo(
     private val dy1: Float,
     private val dx2: Float,
     private val dy2: Float
-) : Command {
+) : PathCommand {
 
     override fun execute(path: Path) {
         path.rQuadTo(dx1, dy1, dx2, dy2)

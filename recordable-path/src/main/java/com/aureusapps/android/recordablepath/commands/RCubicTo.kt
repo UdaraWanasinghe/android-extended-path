@@ -11,7 +11,7 @@ internal class RCubicTo(
     private val y2: Float,
     private val x3: Float,
     private val y3: Float
-) : Command {
+) : PathCommand {
 
     override fun execute(path: Path) {
         path.rCubicTo(x1, y1, x2, y2, x3, y3)

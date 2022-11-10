@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 internal class RMoveTo(
     private val dx: Float,
     private val dy: Float
-) : Command {
+) : PathCommand {
 
     override fun execute(path: Path) {
         path.rMoveTo(dx, dy)

@@ -12,7 +12,7 @@ internal class ArcTo(
     private val startAngle: Float,
     private val sweepAngle: Float,
     private val forceMoveTo: Boolean
-) : Command {
+) : PathCommand {
 
     override fun execute(path: Path) {
         path.arcTo(left, top, right, bottom, startAngle, sweepAngle, forceMoveTo)

@@ -10,7 +10,7 @@ internal class AddRect(
     private val right: Float,
     private val bottom: Float,
     private val dir: Path.Direction
-) : Command {
+) : PathCommand {
 
     override fun execute(path: Path) {
         path.addRect(left, top, right, bottom, dir)

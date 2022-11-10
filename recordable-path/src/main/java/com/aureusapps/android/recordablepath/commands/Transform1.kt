@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 internal class Transform1(
     private val matrix: MatrixAsFloatArray,
     private val path: RecordablePath?
-) : Command {
+) : PathCommand {
 
     override fun execute(path: Path) {
         path.transform(matrix, this.path)

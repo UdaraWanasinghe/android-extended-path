@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 internal class AddPath2(
     private val path: RecordablePath,
     private val matrix: MatrixAsFloatArray
-) : Command {
+) : PathCommand {
 
     override fun execute(path: Path) {
         path.addPath(this.path, matrix)
