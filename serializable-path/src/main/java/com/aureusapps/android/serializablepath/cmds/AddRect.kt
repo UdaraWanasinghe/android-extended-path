@@ -18,9 +18,9 @@ internal class AddRect(
         // we can break down this command to draw lines instead
         // we have to consider the direction of the rectangle
         return if (dir == Path.Direction.CW) {
-            "M$left,${top}L$right,${top}L$right,${bottom}L$left,${bottom}L$left,${top}"
+            "M$left,${top}L$right,${top}L$right,${bottom}L$left,${bottom}L$left,${top}Z"
         } else {
-            "M$left,${top}L$left,${bottom}L$right,${bottom}L$right,${top}L$left,${top}"
+            "M$left,${top}L$left,${bottom}L$right,${bottom}L$right,${top}L$left,${top}Z"
         }
     }
 }
