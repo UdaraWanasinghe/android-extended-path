@@ -64,4 +64,16 @@ class VectorPath : Path() {
         commands.add(AddRoundRect2(left, top, right, bottom, rx, ry, dir))
     }
 
+    override fun addArc(
+        left: Float,
+        top: Float,
+        right: Float,
+        bottom: Float,
+        startAngle: Float,
+        sweepAngle: Float
+    ) {
+        super.addArc(left, top, right, bottom, startAngle, sweepAngle)
+        commands.add(AddArc(left, top, right, bottom, startAngle, sweepAngle))
+    }
+
 }

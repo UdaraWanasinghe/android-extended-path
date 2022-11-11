@@ -11,6 +11,7 @@ internal class AddRoundRect2(
     private val ry: Float,
     private val dir: Path.Direction
 ) : Command {
+
     override fun execute(path: Path) {
         path.addRoundRect(left, top, right, bottom, rx, ry, dir)
     }
@@ -40,4 +41,5 @@ internal class AddRoundRect2(
                     "Z"
         }
     }
+
 }

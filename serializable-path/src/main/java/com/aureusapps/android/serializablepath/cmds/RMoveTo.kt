@@ -6,6 +6,7 @@ internal class RMoveTo(
     private val dx: Float,
     private val dy: Float
 ) : Command {
+
     override fun execute(path: Path) {
         path.rMoveTo(dx, dy)
     }
@@ -13,4 +14,5 @@ internal class RMoveTo(
     override fun toPathData(): String {
         return "m$dx,$dy"
     }
+
 }
