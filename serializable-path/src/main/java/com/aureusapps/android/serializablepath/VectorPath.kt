@@ -1,6 +1,7 @@
 package com.aureusapps.android.serializablepath
 
 import android.graphics.Path
+import android.graphics.RectF
 import com.aureusapps.android.serializablepath.cmds.*
 
 class VectorPath : Path() {
@@ -79,6 +80,11 @@ class VectorPath : Path() {
     override fun addCircle(x: Float, y: Float, radius: Float, dir: Direction) {
         super.addCircle(x, y, radius, dir)
         commands.add(AddCircle(x, y, radius, dir))
+    }
+
+    override fun addOval(oval: RectF, dir: Direction) {
+        super.addOval(oval, dir)
+        commands.add(AddOval(oval.left, oval.top, oval.right, oval.bottom, dir))
     }
 
 }
