@@ -1,8 +1,8 @@
 package com.aureusapps.android.serializablepath.commands
 
 import android.graphics.Path
-import com.aureusapps.android.serializablepath.MatrixAsFloatArray
 import com.aureusapps.android.serializablepath.SerializablePath
+import com.aureusapps.android.serializablepath.serializers.MatrixAsFloatArray
 import kotlinx.serialization.Serializable
 
 @Serializable

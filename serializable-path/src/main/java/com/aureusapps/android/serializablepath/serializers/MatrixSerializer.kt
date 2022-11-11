@@ -1,4 +1,4 @@
-package com.aureusapps.android.serializablepath
+package com.aureusapps.android.serializablepath.serializers
 
 import android.graphics.Matrix
 import androidx.core.graphics.values
@@ -14,12 +14,12 @@ import kotlinx.serialization.encoding.Encoder
 internal class MatrixSerializer : KSerializer<Matrix> {
     private val delegateSerializer = FloatArraySerializer()
 
+    override val descriptor = SerialDescriptor("Matrix", delegateSerializer.descriptor)
+
     override fun deserialize(decoder: Decoder): Matrix {
         val array = decoder.decodeSerializableValue(delegateSerializer)
         return Matrix().apply { setValues(array) }
     }
-
-    override val descriptor = SerialDescriptor("Matrix", delegateSerializer.descriptor)
 
     override fun serialize(encoder: Encoder, value: Matrix) {
         encoder.encodeSerializableValue(delegateSerializer, value.values())

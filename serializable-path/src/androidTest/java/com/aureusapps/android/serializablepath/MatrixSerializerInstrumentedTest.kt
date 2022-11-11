@@ -3,6 +3,7 @@ package com.aureusapps.android.serializablepath
 import android.graphics.Matrix
 import androidx.core.graphics.values
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.aureusapps.android.serializablepath.serializers.MatrixSerializer
 import kotlinx.serialization.json.Json
 import org.junit.Assert
 import org.junit.Test
