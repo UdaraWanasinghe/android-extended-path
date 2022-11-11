@@ -4,6 +4,12 @@ plugins {
     id 'kotlinx-serialization'
 }
 
+ext {
+    PUBLISH_GROUP_ID = 'com.aureusapps.android'
+    PUBLISH_VERSION = version_name
+    PUBLISH_ARTIFACT_ID = 'serializable-path'
+}
+
 android {
     namespace 'com.aureusapps.android.serializablepath'
     compileSdk 33
@@ -45,3 +51,5 @@ dependencies {
     androidTestImplementation libs.espresso.core
 
 }
+
+apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
