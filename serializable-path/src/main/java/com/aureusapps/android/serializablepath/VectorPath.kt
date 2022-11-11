@@ -1,10 +1,7 @@
 package com.aureusapps.android.serializablepath
 
 import android.graphics.Path
-import com.aureusapps.android.serializablepath.cmds.AddRect
-import com.aureusapps.android.serializablepath.cmds.Command
-import com.aureusapps.android.serializablepath.cmds.MoveTo
-import com.aureusapps.android.serializablepath.cmds.RMoveTo
+import com.aureusapps.android.serializablepath.cmds.*
 
 class VectorPath : Path() {
 
@@ -51,6 +48,7 @@ class VectorPath : Path() {
         dir: Direction
     ) {
         super.addRoundRect(left, top, right, bottom, radii, dir)
+        commands.add(AddRoundRect(left, top, right, bottom, radii, dir))
     }
 
     override fun addRoundRect(
