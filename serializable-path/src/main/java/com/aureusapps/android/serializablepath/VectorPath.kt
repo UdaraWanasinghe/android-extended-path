@@ -48,7 +48,7 @@ class VectorPath : Path() {
         dir: Direction
     ) {
         super.addRoundRect(left, top, right, bottom, radii, dir)
-        commands.add(AddRoundRect(left, top, right, bottom, radii, dir))
+        commands.add(AddRoundRect1(left, top, right, bottom, radii, dir))
     }
 
     override fun addRoundRect(
@@ -61,6 +61,7 @@ class VectorPath : Path() {
         dir: Direction
     ) {
         super.addRoundRect(left, top, right, bottom, rx, ry, dir)
+        commands.add(AddRoundRect2(left, top, right, bottom, rx, ry, dir))
     }
 
 }

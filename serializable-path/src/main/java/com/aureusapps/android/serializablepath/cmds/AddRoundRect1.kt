@@ -2,7 +2,7 @@ package com.aureusapps.android.serializablepath.cmds
 
 import android.graphics.Path
 
-internal class AddRoundRect(
+internal class AddRoundRect1(
     private val left: Float,
     private val top: Float,
     private val right: Float,
