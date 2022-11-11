@@ -76,4 +76,9 @@ class VectorPath : Path() {
         commands.add(AddArc(left, top, right, bottom, startAngle, sweepAngle))
     }
 
+    override fun addCircle(x: Float, y: Float, radius: Float, dir: Direction) {
+        super.addCircle(x, y, radius, dir)
+        commands.add(AddCircle(x, y, radius, dir))
+    }
+
 }
