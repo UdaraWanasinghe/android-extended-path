@@ -35,7 +35,7 @@ internal class AddOval(
                     "Z"
         }
     }
-    
-    override fun isClosed(): Boolean = true
+
+    override val isClosed: Boolean = true
 
 }

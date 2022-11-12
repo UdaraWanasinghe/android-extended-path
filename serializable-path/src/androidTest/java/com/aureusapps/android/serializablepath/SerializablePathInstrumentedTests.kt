@@ -5,6 +5,6 @@ import org.junit.runners.Suite
 
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
-    VectorPathInstrumentedTest::class
+    SerializablePathInstrumentedTest::class
 )
 class SerializablePathInstrumentedTests

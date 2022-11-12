@@ -15,6 +15,6 @@ internal class RMoveTo(
         return "m$dx,$dy"
     }
 
-    override fun isClosed(): Boolean = false
+    override val isClosed: Boolean = false
 
 }

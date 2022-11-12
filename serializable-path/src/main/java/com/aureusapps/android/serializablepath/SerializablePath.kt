@@ -2,10 +2,9 @@ package com.aureusapps.android.serializablepath
 
 import android.graphics.Matrix
 import android.graphics.Path
-import android.graphics.RectF
 import com.aureusapps.android.serializablepath.commands.*
 
-class VectorPath {
+class SerializablePath {
 
     companion object {
         fun fromPathData(pathData: String): Path {
@@ -36,7 +35,7 @@ class VectorPath {
         top: Float,
         right: Float,
         bottom: Float,
-        dir: Path.Direction
+        dir: Path.Direction = Path.Direction.CW
     ) {
         path.addRect(left, top, right, bottom, dir)
         commands.add(AddRect(left, top, right, bottom, dir))
@@ -48,7 +47,7 @@ class VectorPath {
         right: Float,
         bottom: Float,
         radii: FloatArray,
-        dir: Path.Direction
+        dir: Path.Direction = Path.Direction.CW
     ) {
         path.addRoundRect(left, top, right, bottom, radii, dir)
         commands.add(AddRoundRect1(left, top, right, bottom, radii, dir))
@@ -61,7 +60,7 @@ class VectorPath {
         bottom: Float,
         rx: Float,
         ry: Float,
-        dir: Path.Direction
+        dir: Path.Direction = Path.Direction.CW
     ) {
         path.addRoundRect(left, top, right, bottom, rx, ry, dir)
         commands.add(AddRoundRect2(left, top, right, bottom, rx, ry, dir))
@@ -83,7 +82,7 @@ class VectorPath {
         x: Float,
         y: Float,
         radius: Float,
-        dir: Path.Direction
+        dir: Path.Direction = Path.Direction.CW
     ) {
         path.addCircle(x, y, radius, dir)
         commands.add(AddCircle(x, y, radius, dir))
@@ -94,43 +93,40 @@ class VectorPath {
         top: Float,
         right: Float,
         bottom: Float,
-        dir: Path.Direction
+        dir: Path.Direction = Path.Direction.CW
     ) {
         path.addOval(left, top, right, bottom, dir)
         commands.add(AddOval(left, top, right, bottom, dir))
     }
 
-    fun addPath(src: VectorPath) {
+    fun addPath(src: SerializablePath) {
+        if (isClosed == false) {
+            commands.add(Close())
+        }
         path.addPath(src.path)
         commands.add(AddPath(src))
     }
 
-    fun addPath(src: VectorPath, matrix: Matrix) {
-        path.addPath(src.path, matrix)
-        // TODO: apply matrix
-    }
-
-    fun addPath(src: Path, dx: Float, dy: Float) {
-        path.addPath(src, dx, dy)
-        // TODO: apply dx, dy
-    }
-
     fun lineTo(x: Float, y: Float) {
         path.lineTo(x, y)
+        commands.add(LineTo(x, y, moveToOrigin))
     }
 
     fun rLineTo(dx: Float, dy: Float) {
         path.rLineTo(dx, dy)
+        commands.add(RLineTo(dx, dy, moveToOrigin))
     }
 
-    fun cubicTo(x1: Float,
-                y1: Float,
-                x2: Float,
-                y2: Float,
-                x3: Float,
-                y3: Float) {
+    fun cubicTo(
+        x1: Float,
+        y1: Float,
+        x2: Float,
+        y2: Float,
+        x3: Float,
+        y3: Float
+    ) {
         path.cubicTo(x1, y1, x2, y2, x3, y3)
-        commands.add(CubicTo(x1, y1, x2, y2, x3, y3))
+        commands.add(CubicTo(x1, y1, x2, y2, x3, y3, moveToOrigin))
     }
 
     fun rCubicTo(
@@ -142,20 +138,7 @@ class VectorPath {
         y3: Float
     ) {
         path.rCubicTo(x1, y1, x2, y2, x3, y3)
-        commands.add(RCubicTo(x1, y1, x2, y2, x3, y3))
-    }
-
-    fun arcTo(
-        left: Float,
-        top: Float,
-        right: Float,
-        bottom: Float,
-        startAngle: Float,
-        sweepAngle: Float,
-        forceMoveTo: Boolean
-    ) {
-        path.arcTo(left, top, right, bottom, startAngle, sweepAngle, forceMoveTo)
-        commands.add(ArcTo(left, top, right, bottom, startAngle, sweepAngle, forceMoveTo))
+        commands.add(RCubicTo(x1, y1, x2, y2, x3, y3, moveToOrigin))
     }
 
     fun quadTo(
@@ -165,6 +148,7 @@ class VectorPath {
         y2: Float
     ) {
         path.quadTo(x1, y1, x2, y2)
+        commands.add(QuadTo(x1, y1, x2, y2, moveToOrigin))
     }
 
     fun rQuadTo(
@@ -174,64 +158,20 @@ class VectorPath {
         dy2: Float
     ) {
         path.rQuadTo(dx1, dy1, dx2, dy2)
+        commands.add(RQuadTo(dx1, dy1, dx2, dy2, moveToOrigin))
     }
 
-    fun set(src: VectorPath) {
+    fun set(src: SerializablePath) {
         path.set(src.path)
         commands = src.commands
-    }
-
-    fun offset(dx: Float, dy: Float) {
-        path.offset(dx, dy)
-    }
-
-    fun offset(dx: Float, dy: Float, dst: Path?) {
-        path.offset(dx, dy, dst)
-    }
-
-    fun setLastPoint(dx: Float, dy: Float) {
-        path.setLastPoint(dx, dy)
     }
 
     fun transform(matrix: Matrix) {
         path.transform(matrix)
     }
 
-    fun addArc(
-        oval: RectF,
-        startAngle: Float,
-        sweepAngle: Float
-    ) {
-        path.addArc(oval, startAngle, sweepAngle)
-        commands.add(AddArc(oval.left, oval.top, oval.right, oval.bottom, startAngle, sweepAngle))
-    }
-
-    fun addOval(oval: RectF, dir: Path.Direction) {
-        path.addOval(oval, dir)
-        commands.add(AddOval(oval.left, oval.top, oval.right, oval.bottom, dir))
-    }
-
-    fun addRect(rect: RectF, dir: Path.Direction) {
-        path.addRect(rect, dir)
-        commands.add(AddRect(rect.left, rect.top, rect.right, rect.bottom, dir))
-    }
-
-    fun addRoundRect(
-        rect: RectF,
-        radii: FloatArray,
-        dir: Path.Direction
-    ) {
-        path.addRoundRect(rect, radii, dir)
-        commands.add(AddRoundRect1(rect.left, rect.top, rect.right, rect.bottom, radii, dir))
-    }
-
-    fun addRoundRect(rect: RectF, rx: Float, ry: Float, dir: Path.Direction) {
-        path.addRoundRect(rect, rx, ry, dir)
-        commands.add(AddRoundRect2(rect.left, rect.top, rect.right, rect.bottom, rx, ry, dir))
-    }
-
     fun close() {
-        if (!isClosed()) {
+        if (isClosed == false) {
             path.close()
             commands.add(Close())
         }
@@ -242,6 +182,8 @@ class VectorPath {
         commands.clear()
     }
 
-    fun isClosed(): Boolean = commands.last().isClosed()
+    internal val isClosed: Boolean? get() = commands.lastOrNull()?.isClosed
+
+    private val moveToOrigin: Boolean get() = commands.lastOrNull()?.isClosed ?: true
 
 }

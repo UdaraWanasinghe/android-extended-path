@@ -35,10 +35,10 @@ internal class AddArc(
         r = a * b / sqrt(acs * acs + bss * bss)
         val ex = cx + r * cos(aa)
         val ey = cy + r * sin(aa)
-        return "M$sx,${sy}A$a,$b,0,0,0,$ex,${ey}Z"
+        return "M$sx,${sy}A$a,$b,0,0,0,$ex,${ey}"
     }
 
-    override fun isClosed(): Boolean = true
+    override val isClosed: Boolean = false
 
     private val Float.toRadians get() = this * Math.PI / 180f
 

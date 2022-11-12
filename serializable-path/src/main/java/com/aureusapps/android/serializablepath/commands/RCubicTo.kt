@@ -8,7 +8,8 @@ internal class RCubicTo(
     private val x2: Float,
     private val y2: Float,
     private val x3: Float,
-    private val y3: Float
+    private val y3: Float,
+    private val moveToOrigin: Boolean
 ) : Command {
 
     override fun execute(path: Path) {
@@ -16,9 +17,13 @@ internal class RCubicTo(
     }
 
     override fun toPathData(): String {
-        return "c$x1,$y1,$x2,$y2,$x3,$y3"
+        return if (moveToOrigin) {
+            "M0,0c$x1,$y1,$x2,$y2,$x3,$y3"
+        } else {
+            "c$x1,$y1,$x2,$y2,$x3,$y3"
+        }
     }
 
-    override fun isClosed(): Boolean = false
+    override val isClosed: Boolean = false
 
 }

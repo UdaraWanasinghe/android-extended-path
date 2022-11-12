@@ -1,10 +1,10 @@
 package com.aureusapps.android.serializablepath.commands
 
 import android.graphics.Path
-import com.aureusapps.android.serializablepath.VectorPath
+import com.aureusapps.android.serializablepath.SerializablePath
 
 internal class AddPath(
-    private val path: VectorPath
+    private val path: SerializablePath
 ) : Command {
 
     override fun execute(path: Path) {
@@ -15,6 +15,6 @@ internal class AddPath(
         return path.toPathData()
     }
 
-    override fun isClosed(): Boolean = path.isClosed()
+    override val isClosed: Boolean get() = path.isClosed ?: false
 
 }

@@ -15,6 +15,6 @@ internal class MoveTo(
         return "M$x,$y"
     }
 
-    override fun isClosed(): Boolean = false
+    override val isClosed: Boolean = false
 
 }

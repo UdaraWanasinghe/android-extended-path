@@ -1,17 +1,19 @@
 package com.aureusapps.android.serializablepath.commands
 
+import android.graphics.Matrix
 import android.graphics.Path
 
-internal class Close : Command {
+class Transform(
+    private val matrix: Matrix,
+    override val isClosed: Boolean
+) : Command {
 
     override fun execute(path: Path) {
-        path.close()
+        path.transform(matrix)
     }
 
     override fun toPathData(): String {
-        return "Z"
+        return ""
     }
-
-    override val isClosed: Boolean = true
 
 }

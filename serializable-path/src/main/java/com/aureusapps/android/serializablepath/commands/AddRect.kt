@@ -35,6 +35,6 @@ internal class AddRect(
         }
     }
 
-    override fun isClosed(): Boolean = true
+    override val isClosed: Boolean = true
 
 }

@@ -5,5 +5,5 @@ import android.graphics.Path
 interface Command {
     fun execute(path: Path)
     fun toPathData(): String
-    fun isClosed(): Boolean
+    val isClosed: Boolean
 }
