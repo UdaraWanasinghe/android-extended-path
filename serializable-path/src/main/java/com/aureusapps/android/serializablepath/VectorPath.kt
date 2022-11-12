@@ -54,22 +54,48 @@ class VectorPath {
         commands.add(AddRoundRect1(left, top, right, bottom, radii, dir))
     }
 
-    fun addRoundRect(left: Float, top: Float, right: Float, bottom: Float, rx: Float, ry: Float, dir: Path.Direction) {
+    fun addRoundRect(
+        left: Float,
+        top: Float,
+        right: Float,
+        bottom: Float,
+        rx: Float,
+        ry: Float,
+        dir: Path.Direction
+    ) {
         path.addRoundRect(left, top, right, bottom, rx, ry, dir)
         commands.add(AddRoundRect2(left, top, right, bottom, rx, ry, dir))
     }
 
-    fun addArc(left: Float, top: Float, right: Float, bottom: Float, startAngle: Float, sweepAngle: Float) {
+    fun addArc(
+        left: Float,
+        top: Float,
+        right: Float,
+        bottom: Float,
+        startAngle: Float,
+        sweepAngle: Float
+    ) {
         path.addArc(left, top, right, bottom, startAngle, sweepAngle)
         commands.add(AddArc(left, top, right, bottom, startAngle, sweepAngle))
     }
 
-    fun addCircle(x: Float, y: Float, radius: Float, dir: Path.Direction) {
+    fun addCircle(
+        x: Float,
+        y: Float,
+        radius: Float,
+        dir: Path.Direction
+    ) {
         path.addCircle(x, y, radius, dir)
         commands.add(AddCircle(x, y, radius, dir))
     }
 
-    fun addOval(left: Float, top: Float, right: Float, bottom: Float, dir: Path.Direction) {
+    fun addOval(
+        left: Float,
+        top: Float,
+        right: Float,
+        bottom: Float,
+        dir: Path.Direction
+    ) {
         path.addOval(left, top, right, bottom, dir)
         commands.add(AddOval(left, top, right, bottom, dir))
     }
@@ -107,27 +133,46 @@ class VectorPath {
         commands.add(CubicTo(x1, y1, x2, y2, x3, y3))
     }
 
-    fun rCubicTo(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float) {
+    fun rCubicTo(
+        x1: Float,
+        y1: Float,
+        x2: Float,
+        y2: Float,
+        x3: Float,
+        y3: Float
+    ) {
         path.rCubicTo(x1, y1, x2, y2, x3, y3)
         commands.add(RCubicTo(x1, y1, x2, y2, x3, y3))
     }
 
-    fun arcTo(left: Float,
-              top: Float,
-              right: Float,
-              bottom: Float,
-              startAngle: Float,
-              sweepAngle: Float,
-              forceMoveTo: Boolean) {
+    fun arcTo(
+        left: Float,
+        top: Float,
+        right: Float,
+        bottom: Float,
+        startAngle: Float,
+        sweepAngle: Float,
+        forceMoveTo: Boolean
+    ) {
         path.arcTo(left, top, right, bottom, startAngle, sweepAngle, forceMoveTo)
         commands.add(ArcTo(left, top, right, bottom, startAngle, sweepAngle, forceMoveTo))
     }
 
-    fun quadTo(x1: Float, y1: Float, x2: Float, y2: Float) {
+    fun quadTo(
+        x1: Float,
+        y1: Float,
+        x2: Float,
+        y2: Float
+    ) {
         path.quadTo(x1, y1, x2, y2)
     }
 
-    fun rQuadTo(dx1: Float, dy1: Float, dx2: Float, dy2: Float) {
+    fun rQuadTo(
+        dx1: Float,
+        dy1: Float,
+        dx2: Float,
+        dy2: Float
+    ) {
         path.rQuadTo(dx1, dy1, dx2, dy2)
     }
 
@@ -161,36 +206,37 @@ class VectorPath {
         path.transform(matrix)
     }
 
-    fun transform(matrix: Matrix, dst: Path?) {
-        path.transform(matrix, dst)
-    }
-
-    fun addPath(src: Path) {
-        path.addPath(src)
-    }
-
-    fun addArc(oval: RectF, startAngle: Float, sweepAngle: Float) {
+    fun addArc(
+        oval: RectF,
+        startAngle: Float,
+        sweepAngle: Float
+    ) {
         path.addArc(oval, startAngle, sweepAngle)
+        commands.add(AddArc(oval.left, oval.top, oval.right, oval.bottom, startAngle, sweepAngle))
     }
 
     fun addOval(oval: RectF, dir: Path.Direction) {
         path.addOval(oval, dir)
+        commands.add(AddOval(oval.left, oval.top, oval.right, oval.bottom, dir))
     }
 
     fun addRect(rect: RectF, dir: Path.Direction) {
         path.addRect(rect, dir)
+        commands.add(AddRect(rect.left, rect.top, rect.right, rect.bottom, dir))
     }
 
-    fun addPath(src: Path, matrix: Matrix) {
-        path.addPath(src, matrix)
-    }
-
-    fun addRoundRect(rect: RectF, radii: FloatArray, dir: Path.Direction) {
+    fun addRoundRect(
+        rect: RectF,
+        radii: FloatArray,
+        dir: Path.Direction
+    ) {
         path.addRoundRect(rect, radii, dir)
+        commands.add(AddRoundRect1(rect.left, rect.top, rect.right, rect.bottom, radii, dir))
     }
 
     fun addRoundRect(rect: RectF, rx: Float, ry: Float, dir: Path.Direction) {
         path.addRoundRect(rect, rx, ry, dir)
+        commands.add(AddRoundRect2(rect.left, rect.top, rect.right, rect.bottom, rx, ry, dir))
     }
 
 }
