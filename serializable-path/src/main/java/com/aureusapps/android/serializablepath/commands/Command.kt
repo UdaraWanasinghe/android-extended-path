@@ -1,4 +1,4 @@
-package com.aureusapps.android.serializablepath.cmds
+package com.aureusapps.android.serializablepath.commands
 
 import android.graphics.Path
 

@@ -2,8 +2,8 @@ package com.aureusapps.android.serializablepath
 
 import android.graphics.Path
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.aureusapps.android.serializablepath.cmds.AddArc
-import com.aureusapps.android.serializablepath.cmds.AddRect
+import com.aureusapps.android.serializablepath.commands.AddArc
+import com.aureusapps.android.serializablepath.commands.AddRect
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith

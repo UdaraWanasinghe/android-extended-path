@@ -3,7 +3,7 @@ package com.aureusapps.android.serializablepath
 import android.graphics.Matrix
 import android.graphics.Path
 import android.graphics.RectF
-import com.aureusapps.android.serializablepath.cmds.*
+import com.aureusapps.android.serializablepath.commands.*
 
 class VectorPath {
 
