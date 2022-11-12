@@ -31,4 +31,6 @@ internal class AddCircle(
         }
     }
 
+    override fun isClosed(): Boolean = true
+
 }

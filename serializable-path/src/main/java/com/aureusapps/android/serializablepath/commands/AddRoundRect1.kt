@@ -49,4 +49,6 @@ internal class AddRoundRect1(
         }
     }
 
+    override fun isClosed(): Boolean = true
+
 }

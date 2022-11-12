@@ -15,4 +15,6 @@ internal class AddPath(
         return path.toPathData()
     }
 
+    override fun isClosed(): Boolean = path.isClosed()
+
 }

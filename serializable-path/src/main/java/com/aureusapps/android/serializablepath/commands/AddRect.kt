@@ -35,4 +35,6 @@ internal class AddRect(
         }
     }
 
+    override fun isClosed(): Boolean = true
+
 }

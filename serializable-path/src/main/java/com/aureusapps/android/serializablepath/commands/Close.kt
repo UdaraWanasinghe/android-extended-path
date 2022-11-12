@@ -2,19 +2,16 @@ package com.aureusapps.android.serializablepath.commands
 
 import android.graphics.Path
 
-internal class MoveTo(
-    private val x: Float,
-    private val y: Float
-) : Command {
+internal class Close : Command {
 
     override fun execute(path: Path) {
-        path.moveTo(x, y)
+        path.close()
     }
 
     override fun toPathData(): String {
-        return "M$x,$y"
+        return "Z"
     }
 
-    override fun isClosed(): Boolean = false
+    override fun isClosed(): Boolean = true
 
 }

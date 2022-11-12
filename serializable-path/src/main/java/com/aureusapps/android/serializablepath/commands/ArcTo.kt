@@ -39,6 +39,8 @@ internal class ArcTo(
         return "M$sx,${sy}A$a,$b,0,0,0,$ex,${ey}"
     }
 
+    override fun isClosed(): Boolean = true
+
     private val Float.toRadians get() = this * Math.PI / 180f
 
 }

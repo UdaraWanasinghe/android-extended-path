@@ -176,15 +176,6 @@ class VectorPath {
         path.rQuadTo(dx1, dy1, dx2, dy2)
     }
 
-    fun close() {
-        path.close()
-    }
-
-    fun reset() {
-        path.reset()
-        commands.clear()
-    }
-
     fun set(src: VectorPath) {
         path.set(src.path)
         commands = src.commands
@@ -238,5 +229,19 @@ class VectorPath {
         path.addRoundRect(rect, rx, ry, dir)
         commands.add(AddRoundRect2(rect.left, rect.top, rect.right, rect.bottom, rx, ry, dir))
     }
+
+    fun close() {
+        if (!isClosed()) {
+            path.close()
+            commands.add(Close())
+        }
+    }
+
+    fun reset() {
+        path.reset()
+        commands.clear()
+    }
+
+    fun isClosed(): Boolean = commands.last().isClosed()
 
 }
