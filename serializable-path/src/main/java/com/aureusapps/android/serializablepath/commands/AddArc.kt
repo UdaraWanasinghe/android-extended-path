@@ -1,9 +1,11 @@
 package com.aureusapps.android.serializablepath.commands
 
 import android.graphics.Path
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@SerialName("AddArc")
 internal class AddArc(
     private val left: Float,
     private val top: Float,

@@ -1,9 +1,11 @@
 package com.aureusapps.android.serializablepath.commands
 
 import android.graphics.Path
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@SerialName("Offset")
 internal class Offset(
     private val dx: Float,
     private val dy: Float

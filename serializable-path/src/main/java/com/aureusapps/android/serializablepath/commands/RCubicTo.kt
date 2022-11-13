@@ -1,9 +1,11 @@
 package com.aureusapps.android.serializablepath.commands
 
 import android.graphics.Path
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@SerialName("RCubicTo")
 internal class RCubicTo(
     private val x1: Float,
     private val y1: Float,
