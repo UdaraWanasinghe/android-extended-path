@@ -3,7 +3,6 @@ package com.aureusapps.android.serializablepath
 import android.graphics.Matrix
 import android.graphics.Path
 import com.aureusapps.android.serializablepath.commands.*
-import com.aureusapps.android.serializablepath.commands.Set
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.decodeFromString
@@ -242,17 +241,7 @@ class SerializablePath {
 
     fun transform(matrix: Matrix) {
         path.transform(matrix)
-        commands.add(Transform1(matrix))
-    }
-
-    fun transform(matrix: Matrix, dst: SerializablePath) {
-        path.transform(matrix, dst.path)
-        commands.add(Transform2(matrix, dst))
-    }
-
-    fun set(src: SerializablePath) {
-        path.set(src.path)
-        commands.add(Set(src))
+        commands.add(Transform(matrix))
     }
 
     fun rewind() {
