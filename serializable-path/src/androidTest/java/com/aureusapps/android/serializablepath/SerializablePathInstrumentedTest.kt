@@ -17,7 +17,7 @@ class SerializablePathInstrumentedTest {
         path.lineTo(100f, 100f)
         val json = Json.encodeToString(path)
         Assert.assertEquals(
-            """{"commands":[{"type":"MoveTo","x":0.0,"y":0.0},{"type":"LineTo","x":100.0,"y":100.0}]}""".trimMargin(),
+            """{"commands":[{"type":"MoveTo","x":0.0,"y":0.0},{"type":"LineTo","x":100.0,"y":100.0}]}""",
             json
         )
         val path2 = SerializablePath.fromJson(json)
