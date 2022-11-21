@@ -36,7 +36,17 @@ class ExtendedPath : BasePath() {
     fun toJson(): String {
         return Json.encodeToString(this)
     }
-
+    
+    /**
+     * Check if the given point is on or inside the path if the path is closed.
+     *
+     * @param x X coordinate of the point.
+     * @param y Y coordinate of the point.
+     * @param precision The error margin.
+     * @param ignoreInside If true, only checked if the point is on the path.
+     * @see <a href="https://www.eecs.umich.edu/courses/eecs380/HANDOUTS/PROJ2/InsidePoly.html">https://www.eecs.umich.edu/courses/eecs380/HANDOUTS/PROJ2/InsidePoly.html</a>
+     * @see <a href="https://stackoverflow.com/a/6853926/9470914">https://stackoverflow.com/a/6853926/9470914</a>
+     */
     fun doIntersect(
         x: Float,
         y: Float,
