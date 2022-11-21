@@ -25,6 +25,15 @@ path.close()
 val json = path.toJson()
 ```
 
+3. Check path intersection
+
+```kotlin
+val path = ExtendedPath()
+path.moveTo(0f, 0f)
+path.lineTo(9f, 9f)
+val doIntersect = path.doIntersect(3f, 3f)
+```
+
 ## Appreciate my work!
 
 If you find this library useful, please consider buying me a coffee.
