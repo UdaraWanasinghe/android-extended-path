@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("Offset")
-internal class Offset(
+internal class Offset1(
     private val dx: Float,
     private val dy: Float
 ) : PathCommand {

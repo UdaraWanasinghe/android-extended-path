@@ -217,7 +217,12 @@ class ExtendedPath : Path() {
 
     override fun offset(dx: Float, dy: Float) {
         super.offset(dx, dy)
-        commands.add(Offset(dx, dy))
+        commands.add(Offset1(dx, dy))
+    }
+
+    fun offset(dx: Float, dy: Float, dst: ExtendedPath?) {
+        super.offset(dx, dy, dst)
+        commands.add(Offset2(dx, dy, dst))
     }
 
     override fun setFillType(ft: FillType) {
