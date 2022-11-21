@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 internal class Offset1(
     private val dx: Float,
     private val dy: Float
-) : PathCommand {
+) : Command {
 
     override fun execute(path: Path) {
         path.offset(dx, dy)

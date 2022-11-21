@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 internal class Transform2(
     private val matrix: MatrixAsFloatArray,
     private val dst: ExtendedPath?
-) : PathCommand {
+) : Command {
 
     override fun execute(path: Path) {
         path.transform(matrix, dst)

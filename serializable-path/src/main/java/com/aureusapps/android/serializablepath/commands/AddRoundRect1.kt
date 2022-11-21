@@ -13,7 +13,7 @@ internal class AddRoundRect1(
     private val bottom: Float,
     private val radii: FloatArray,
     private val dir: Path.Direction
-) : PathCommand {
+) : Command {
 
     override fun execute(path: Path) {
         path.addRoundRect(left, top, right, bottom, radii, dir)

@@ -11,7 +11,7 @@ internal class Offset2(
     private val dx: Float,
     private val dy: Float,
     private val dst: ExtendedPath?
-) : PathCommand {
+) : Command {
 
     override fun execute(path: Path) {
         path.offset(dx, dy, dst)

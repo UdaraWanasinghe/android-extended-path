@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("ToggleInverseFillType")
-internal object ToggleInverseFillType : PathCommand {
+internal object ToggleInverseFillType : Command {
 
     override fun execute(path: android.graphics.Path) {
         path.toggleInverseFillType()

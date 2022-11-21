@@ -9,7 +9,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @Serializable
-class ExtendedPath : Path() {
+class ExtendedPath : BasePath() {
 
     companion object {
         fun fromJson(json: String): ExtendedPath {
@@ -17,10 +17,11 @@ class ExtendedPath : Path() {
         }
     }
 
-    private val commands = mutableListOf<PathCommand>()
-
     init {
-        // reinitialize path
+        initiatePath()
+    }
+
+    private fun initiatePath() {
         if (commands.isNotEmpty()) {
             val p = Path()
             commands.forEach { it.execute(p) }

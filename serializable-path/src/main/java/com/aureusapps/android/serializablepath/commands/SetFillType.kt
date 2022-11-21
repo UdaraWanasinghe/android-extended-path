@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 @SerialName("SetFillType")
 internal class SetFillType(
     private val ft: FillType
-) : PathCommand {
+) : Command {
 
     override fun execute(path: Path) {
         path.fillType = ft

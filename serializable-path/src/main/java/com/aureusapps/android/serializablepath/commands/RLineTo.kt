@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 internal class RLineTo(
     private val dx: Float,
     private val dy: Float
-) : PathCommand {
+) : Command {
 
     override fun execute(path: Path) {
         path.rLineTo(dx, dy)

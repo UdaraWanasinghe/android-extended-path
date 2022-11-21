@@ -13,7 +13,7 @@ internal class AddArc(
     private val bottom: Float,
     private val startAngle: Float,
     private val sweepAngle: Float
-) : PathCommand {
+) : Command {
 
     override fun execute(path: Path) {
         path.addArc(left, top, right, bottom, startAngle, sweepAngle)

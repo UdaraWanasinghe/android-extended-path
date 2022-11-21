@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("Rewind")
-internal object Rewind : PathCommand {
+internal object Rewind : Command {
 
     override fun execute(path: Path) {
         path.rewind()

@@ -13,7 +13,7 @@ internal class CubicTo(
     private val y2: Float,
     private val x3: Float,
     private val y3: Float
-) : PathCommand {
+) : Command {
 
     override fun execute(path: Path) {
         path.cubicTo(x1, y1, x2, y2, x3, y3)

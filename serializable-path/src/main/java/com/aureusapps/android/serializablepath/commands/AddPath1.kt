@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 @SerialName("AddPath1")
 internal class AddPath1(
     private val path: ExtendedPath
-) : PathCommand {
+) : Command {
 
     override fun execute(path: Path) {
         path.addPath(this.path)

@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 internal class AddPath2(
     private val path: ExtendedPath,
     private val matrix: MatrixAsFloatArray
-) : PathCommand {
+) : Command {
 
     override fun execute(path: Path) {
         path.addPath(this.path, matrix)

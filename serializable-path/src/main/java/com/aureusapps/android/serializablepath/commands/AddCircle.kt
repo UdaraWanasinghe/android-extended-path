@@ -11,7 +11,7 @@ internal class AddCircle(
     private val y: Float,
     private val radius: Float,
     private val dir: Path.Direction
-) : PathCommand {
+) : Command {
 
     override fun execute(path: Path) {
         path.addCircle(x, y, radius, dir)

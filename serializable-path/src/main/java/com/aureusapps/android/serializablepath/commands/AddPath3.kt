@@ -11,7 +11,7 @@ internal class AddPath3(
     private val path: ExtendedPath,
     private val dx: Float,
     private val dy: Float
-) : PathCommand {
+) : Command {
 
     override fun execute(path: Path) {
         path.addPath(this.path, dx, dy)

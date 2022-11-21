@@ -12,7 +12,7 @@ internal class AddOval(
     private val right: Float,
     private val bottom: Float,
     private val dir: Path.Direction
-) : PathCommand {
+) : Command {
 
     override fun execute(path: Path) {
         path.addOval(left, top, right, bottom, dir)
