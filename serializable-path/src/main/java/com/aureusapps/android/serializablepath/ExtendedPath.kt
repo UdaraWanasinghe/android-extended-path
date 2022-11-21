@@ -36,21 +36,25 @@ class ExtendedPath : BasePath() {
     override fun moveTo(x: Float, y: Float) {
         super.moveTo(x, y)
         commands.add(MoveTo(x, y))
+        flagContoursChanged()
     }
 
     override fun rMoveTo(dx: Float, dy: Float) {
         super.rMoveTo(dx, dy)
         commands.add(RMoveTo(dx, dy))
+        flagContoursChanged()
     }
 
     override fun lineTo(x: Float, y: Float) {
         super.lineTo(x, y)
         commands.add(LineTo(x, y))
+        flagContoursChanged()
     }
 
     override fun rLineTo(dx: Float, dy: Float) {
         super.rLineTo(dx, dy)
         commands.add(RLineTo(dx, dy))
+        flagContoursChanged()
     }
 
     override fun cubicTo(
@@ -63,6 +67,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.cubicTo(x1, y1, x2, y2, x3, y3)
         commands.add(CubicTo(x1, y1, x2, y2, x3, y3))
+        flagContoursChanged()
     }
 
     override fun rCubicTo(
@@ -75,6 +80,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.rCubicTo(x1, y1, x2, y2, x3, y3)
         commands.add(RCubicTo(x1, y1, x2, y2, x3, y3))
+        flagContoursChanged()
     }
 
     override fun addCircle(
@@ -85,6 +91,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.addCircle(x, y, radius, dir)
         commands.add(AddCircle(x, y, radius, dir))
+        flagContoursChanged()
     }
 
     override fun addRect(
@@ -96,6 +103,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.addRect(left, top, right, bottom, dir)
         commands.add(AddRect(left, top, right, bottom, dir))
+        flagContoursChanged()
     }
 
     override fun addRoundRect(
@@ -108,6 +116,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.addRoundRect(left, top, right, bottom, radii, dir)
         commands.add(AddRoundRect1(left, top, right, bottom, radii, dir))
+        flagContoursChanged()
     }
 
     override fun addRoundRect(
@@ -121,6 +130,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.addRoundRect(left, top, right, bottom, rx, ry, dir)
         commands.add(AddRoundRect2(left, top, right, bottom, rx, ry, dir))
+        flagContoursChanged()
     }
 
     override fun addArc(
@@ -140,6 +150,7 @@ class ExtendedPath : BasePath() {
             sweepAngle
         )
         commands.add(AddArc(left, top, right, bottom, startAngle, sweepAngle))
+        flagContoursChanged()
     }
 
     override fun arcTo(
@@ -161,6 +172,7 @@ class ExtendedPath : BasePath() {
             forceMoveTo
         )
         commands.add(ArcTo(left, top, right, bottom, startAngle, sweepAngle, forceMoveTo))
+        flagContoursChanged()
     }
 
     override fun addOval(
@@ -172,6 +184,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.addOval(left, top, right, bottom, dir)
         commands.add(AddOval(left, top, right, bottom, dir))
+        flagContoursChanged()
     }
 
     override fun quadTo(
@@ -182,6 +195,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.quadTo(x1, y1, x2, y2)
         commands.add(QuadTo(x1, y1, x2, y2))
+        flagContoursChanged()
     }
 
     override fun rQuadTo(
@@ -192,11 +206,13 @@ class ExtendedPath : BasePath() {
     ) {
         super.rQuadTo(dx1, dy1, dx2, dy2)
         commands.add(RQuadTo(dx1, dy1, dx2, dy2))
+        flagContoursChanged()
     }
 
     fun addPath(src: ExtendedPath) {
         super.addPath(src)
         commands.add(AddPath1(src))
+        flagContoursChanged()
     }
 
     fun addPath(
@@ -205,6 +221,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.addPath(src, matrix)
         commands.add(AddPath2(src, matrix))
+        flagContoursChanged()
     }
 
     fun addPath(
@@ -214,16 +231,19 @@ class ExtendedPath : BasePath() {
     ) {
         super.addPath(src, dx, dy)
         commands.add(AddPath3(src, dx, dy))
+        flagContoursChanged()
     }
 
     override fun offset(dx: Float, dy: Float) {
         super.offset(dx, dy)
         commands.add(Offset1(dx, dy))
+        flagContoursRecreate()
     }
 
     fun offset(dx: Float, dy: Float, dst: ExtendedPath?) {
         super.offset(dx, dy, dst)
         commands.add(Offset2(dx, dy, dst))
+        flagContoursRecreate()
     }
 
     override fun setFillType(ft: FillType) {
@@ -234,6 +254,7 @@ class ExtendedPath : BasePath() {
     override fun setLastPoint(dx: Float, dy: Float) {
         super.setLastPoint(dx, dy)
         commands.add(SetLastPoint(dx, dy))
+        flagContoursChanged()
     }
 
     override fun incReserve(extraPtCount: Int) {
@@ -249,26 +270,31 @@ class ExtendedPath : BasePath() {
     override fun transform(matrix: Matrix) {
         super.transform(matrix)
         commands.add(Transform1(matrix))
+        flagContoursRecreate()
     }
 
     fun transform(matrix: Matrix, dst: ExtendedPath?) {
         super.transform(matrix, dst)
         commands.add(Transform2(matrix, dst))
+        flagContoursRecreate()
     }
 
     override fun close() {
         super.close()
         commands.add(Close)
+        flagContoursChanged()
     }
 
     override fun rewind() {
         super.rewind()
         commands.clear()
+        flagContoursRecreate()
     }
 
     override fun reset() {
         super.reset()
         commands.clear()
+        flagContoursRecreate()
     }
 
 }

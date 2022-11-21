@@ -11,7 +11,7 @@ abstract class BasePath : Path() {
     var precision = 4f
         set(value) {
             field = value
-            lastCommandSize = 0
+            contourState = ContourState.RECREATE
             lastContourIndex = 0
             lastContourDistance = 0f
         }
@@ -19,29 +19,28 @@ abstract class BasePath : Path() {
     private val contours = mutableListOf<Contour>()
     private val measure = PathMeasure()
 
-    private var lastCommandSize = 0
+    private var contourState = ContourState.RECREATE
     private var lastContourIndex = 0
     private var lastContourDistance = 0f
 
     fun getContours(): List<Contour> {
-        return when {
-            commands.size > lastCommandSize -> {
-                // add contours from current position
+        return when (contourState) {
+            ContourState.CHANGED -> {
                 createContours()
             }
-            commands.size < lastCommandSize -> {
-                // find contours from beginning
+            ContourState.RECREATE -> {
                 lastContourIndex = 0
                 lastContourDistance = 0f
                 contours.clear()
                 createContours()
             }
-            else -> {
+            ContourState.UNCHANGED -> {
                 contours
             }
         }
     }
 
+    @Synchronized
     private fun createContours(): List<Contour> {
         measure.setPath(this, false)
         var contourIndex = -1
@@ -67,8 +66,24 @@ abstract class BasePath : Path() {
             dis = 0f
         } while (measure.nextContour())
         lastContourIndex = contourIndex
-        lastCommandSize = commands.size
+        flogContoursUnchanged()
         return contours
+    }
+
+    private fun flogContoursUnchanged() {
+        contourState = ContourState.UNCHANGED
+    }
+
+    protected fun flagContoursChanged() {
+        contourState = ContourState.CHANGED
+    }
+
+    protected fun flagContoursRecreate() {
+        contourState = ContourState.RECREATE
+    }
+
+    protected enum class ContourState {
+        UNCHANGED, CHANGED, RECREATE
     }
 
 }
