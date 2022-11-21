@@ -1,20 +1,25 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlinx-serialization'
+}
+
+ext {
+    PUBLISH_GROUP_ID = 'com.aureusapps.android'
+    PUBLISH_VERSION = version_name
+    PUBLISH_ARTIFACT_ID = 'extended-path'
 }
 
 android {
-    namespace 'com.aureusapps.android.extendedpath.example'
+    namespace 'com.aureusapps.android.extendedpath'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.aureusapps.android.extendedpath.example"
         minSdk 21
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -23,10 +28,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = '11'
     }
@@ -38,6 +45,7 @@ dependencies {
     implementation libs.appcompat
     implementation libs.material
     implementation libs.constraintlayout
+    implementation libs.kotlinx.serialization.json
 
     testImplementation libs.junit
 
@@ -45,3 +53,5 @@ dependencies {
     androidTestImplementation libs.espresso.core
 
 }
+
+apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
