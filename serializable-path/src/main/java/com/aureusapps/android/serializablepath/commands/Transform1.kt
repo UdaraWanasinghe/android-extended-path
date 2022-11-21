@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("Transform")
-internal class Transform(
+internal class Transform1(
     private val matrix: MatrixAsFloatArray
 ) : PathCommand {
 

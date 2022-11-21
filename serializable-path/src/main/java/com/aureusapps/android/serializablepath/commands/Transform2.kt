@@ -2,19 +2,19 @@ package com.aureusapps.android.serializablepath.commands
 
 import android.graphics.Path
 import com.aureusapps.android.serializablepath.ExtendedPath
+import com.aureusapps.android.serializablepath.serializers.MatrixAsFloatArray
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("AddPath3")
-internal class AddPath3(
-    private val path: ExtendedPath,
-    private val dx: Float,
-    private val dy: Float
+@SerialName("Transform")
+internal class Transform2(
+    private val matrix: MatrixAsFloatArray,
+    private val dst: ExtendedPath?
 ) : PathCommand {
 
     override fun execute(path: Path) {
-        path.addPath(this.path, dx, dy)
+        path.transform(matrix, dst)
     }
 
 }
