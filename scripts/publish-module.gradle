@@ -1,5 +1,14 @@
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
+apply plugin: 'org.jetbrains.dokka'
+
+dokkaHtml {
+    pluginsMapConfiguration.set(
+            [
+                    "org.jetbrains.dokka.base.DokkaBase": """{"footerMessage": "Copyright © 2022 AureusApps"}"""
+            ]
+    )
+}
 
 task androidSourcesJar(type: Jar) {
     archiveClassifier.set('sources')
@@ -7,8 +16,14 @@ task androidSourcesJar(type: Jar) {
     from android.sourceSets.main.kotlin.srcDirs
 }
 
+task javadocJar(type: Jar, dependsOn: dokkaHtml) {
+    archiveClassifier.set('javadoc')
+    from dokkaHtml.outputDirectory
+}
+
 artifacts {
     archives androidSourcesJar
+    archives javadocJar
 }
 
 group = PUBLISH_GROUP_ID
@@ -28,16 +43,17 @@ afterEvaluate {
 
                 // custom artifacts
                 artifact androidSourcesJar
+                artifact javadocJar
 
                 // pom file
                 pom {
                     name = PUBLISH_ARTIFACT_ID
-                    description = 'Bottom sheet widget and the content provider to search and download fonts from Google Fonts.'
-                    url = 'https://github.com/UdaraWanasinghe/android-font-picker'
+                    description = 'Android graphics path with extended functionalities.'
+                    url = 'https://github.com/UdaraWanasinghe/android-extended-path'
                     licenses {
                         license {
                             name = 'MIT License'
-                            url = 'https://github.com/UdaraWanasinghe/android-font-picker/blob/main/LICENSE'
+                            url = 'https://github.com/UdaraWanasinghe/android-extended-path/blob/main/LICENSE'
                         }
                     }
                     developers {
@@ -48,9 +64,9 @@ afterEvaluate {
                         }
                     }
                     scm {
-                        connection = 'scm:git:github.com/UdaraWanasinghe/android-font-picker.git'
-                        developerConnection = 'scm:git:ssh://github.com/UdaraWanasinghe/android-font-picker.git'
-                        url = 'https://github.com/UdaraWanasinghe/android-font-picker'
+                        connection = 'scm:git:github.com/UdaraWanasinghe/android-extended-path.git'
+                        developerConnection = 'scm:git:ssh://github.com/UdaraWanasinghe/android-extended-path.git'
+                        url = 'https://github.com/UdaraWanasinghe/android-extended-path'
                     }
                 }
             }

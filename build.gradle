@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization) apply false
     alias(libs.plugins.io.github.gradle.nexus.publish.plugin) apply true
+    alias(libs.plugins.org.jetbrains.dokka) apply false
 }
 
 ext {

@@ -316,7 +316,12 @@ class ExtendedPath : BasePath() {
 
     override fun transform(matrix: Matrix) {
         super.transform(matrix)
-        commands.add(Transform1(matrix))
+        val last = commands.lastOrNull()
+        if (last is Transform1) {
+            last.concat(matrix)
+        } else {
+            commands.add(Transform1(matrix))
+        }
         flagContoursRecreate()
     }
 
