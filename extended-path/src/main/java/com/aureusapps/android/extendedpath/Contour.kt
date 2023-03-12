@@ -13,7 +13,9 @@ data class Contour(val points: List<PointF>, val closed: Boolean) {
      * @param x X coordinate of the point.
      * @param y Y coordinate of the point.
      * @param precision The allowed error radius.
-     * @param ignoreInside If true, only checked if the point is on the path.
+     * @param checkInside If [CheckInside.YES], always checks inside.
+     * If [CheckInside.NO], inside is not checked.
+     * If [CheckInside.IF_CLOSED] checked only if path is closed.
      * @see <a href="https://www.eecs.umich.edu/courses/eecs380/HANDOUTS/PROJ2/InsidePoly.html">https://www.eecs.umich.edu/courses/eecs380/HANDOUTS/PROJ2/InsidePoly.html</a>
      * @see <a href="https://stackoverflow.com/a/6853926/9470914">https://stackoverflow.com/a/6853926/9470914</a>
      */
@@ -21,10 +23,10 @@ data class Contour(val points: List<PointF>, val closed: Boolean) {
         x: Float,
         y: Float,
         precision: Float,
-        ignoreInside: Boolean
+        checkInside: CheckInside
     ): Boolean {
         if (points.isNotEmpty()) {
-            if (!ignoreInside && closed) {
+            if (checkInside(checkInside)) {
                 // check if inside the contour
                 if (isInsidePolygon(points, x, y)) return true
             } else {
@@ -42,6 +44,14 @@ data class Contour(val points: List<PointF>, val closed: Boolean) {
             }
         }
         return false
+    }
+
+    private fun checkInside(checkInside: CheckInside): Boolean {
+        return when (checkInside) {
+            CheckInside.YES -> true
+            CheckInside.NO -> false
+            CheckInside.IF_CLOSED -> closed
+        }
     }
 
     private fun isInsidePolygon(points: List<PointF>, x: Float, y: Float): Boolean {

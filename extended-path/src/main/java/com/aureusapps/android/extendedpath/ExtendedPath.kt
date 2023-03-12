@@ -37,11 +37,11 @@ class ExtendedPath : BasePath() {
         x: Float,
         y: Float,
         precision: Float = this.precision,
-        ignoreInside: Boolean = false
+        checkInside: CheckInside = CheckInside.IF_CLOSED
     ): Boolean {
         val contours = getContours()
         for (contour in contours) {
-            if (contour.doIntersect(x, y, precision, ignoreInside)) {
+            if (contour.doIntersect(x, y, precision, checkInside)) {
                 return true
             }
         }
@@ -57,7 +57,7 @@ class ExtendedPath : BasePath() {
     fun doIntersect(
         path: ExtendedPath,
         precision: Float = this.precision,
-        ignoreInside: Boolean = false
+        checkInside: CheckInside = CheckInside.IF_CLOSED
     ): Boolean {
         val contours1 = getContours()
         val contours2 = path.getContours()
@@ -71,7 +71,8 @@ class ExtendedPath : BasePath() {
                             point.x,
                             point.y,
                             precision,
-                            ignoreInside)
+                            checkInside
+                        )
                     ) {
                         return true
                     }
