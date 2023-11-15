@@ -30,5 +30,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "extended-path"
+rootProject.name = "android-extended-path"
 include("extended-path", "example")
