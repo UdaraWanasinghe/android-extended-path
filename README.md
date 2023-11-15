@@ -6,9 +6,9 @@ Android graphics path with extended functionalities.
 
 1. Add the library to your project.
 
-```groovy
+```kotlin
 dependencies {
-    compile 'com.aureusapps.android:extended-path:1.0.0'
+    implementation("com.aureusapps.android:extended-path:1.0.0")
 }
 ```
 
