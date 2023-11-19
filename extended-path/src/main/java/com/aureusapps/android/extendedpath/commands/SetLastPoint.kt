@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("SetLastPoint")
-internal class SetLastPoint(
+internal data class SetLastPoint(
     private val x: Float,
     private val y: Float
 ) : Command {

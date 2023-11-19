@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("AddArc")
-internal class AddArc(
+internal data class AddArc(
     private val left: Float,
     private val top: Float,
     private val right: Float,

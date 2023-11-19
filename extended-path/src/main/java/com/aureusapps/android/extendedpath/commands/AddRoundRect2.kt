@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("AddRoundRect2")
-internal class AddRoundRect2(
+internal data class AddRoundRect2(
     private val left: Float,
     private val top: Float,
     private val right: Float,

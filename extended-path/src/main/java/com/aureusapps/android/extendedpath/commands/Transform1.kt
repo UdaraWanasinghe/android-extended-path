@@ -8,14 +8,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("Transform1")
-internal class Transform1(
+internal data class Transform1(
     private val matrix: MatrixAsFloatArray
 ) : Command {
 
     override fun execute(path: Path) {
         path.transform(matrix)
     }
-    
+
     fun concat(matrix: Matrix) {
         this.matrix.postConcat(matrix)
     }

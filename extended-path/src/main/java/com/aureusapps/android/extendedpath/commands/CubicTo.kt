@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("CubicTo")
-internal class CubicTo(
+internal data class CubicTo(
     private val x1: Float,
     private val y1: Float,
     private val x2: Float,

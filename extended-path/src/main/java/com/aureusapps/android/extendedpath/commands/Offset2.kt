@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("Offset2")
-internal class Offset2(
+internal data class Offset2(
     private val dx: Float,
     private val dy: Float,
     private val dst: ExtendedPath?

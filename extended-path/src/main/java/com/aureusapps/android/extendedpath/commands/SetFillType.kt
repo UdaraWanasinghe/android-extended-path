@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("SetFillType")
-internal class SetFillType(
+internal data class SetFillType(
     private val ft: FillType
 ) : Command {
 

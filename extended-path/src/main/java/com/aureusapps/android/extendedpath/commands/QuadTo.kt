@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("QuadTo")
-internal class QuadTo(
+internal data class QuadTo(
     private val x1: Float,
     private val y1: Float,
     private val x2: Float,

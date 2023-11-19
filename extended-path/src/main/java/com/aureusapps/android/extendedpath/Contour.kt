@@ -25,28 +25,15 @@ data class Contour(val points: List<PointF>, val closed: Boolean) {
         precision: Float,
         checkInside: CheckInside
     ): Boolean {
-        if (points.isNotEmpty()) {
-            if (checkInside(checkInside)) {
-                // check if inside the contour
-                if (isInsidePolygon(points, x, y)) return true
-            } else {
-                // check if on the contour
-                var x1 = points[0].x
-                var y1 = points[0].y
-                for (j in 1 until points.size) {
-                    val x2 = points[j].x
-                    val y2 = points[j].y
-                    val dist = shortestDistanceToLineSegment(x, y, x1, y1, x2, y2)
-                    if (dist <= precision) return true
-                    x1 = x2
-                    y1 = y2
-                }
-            }
+        if (points.isEmpty()) return false
+        return if (shouldCheckInside(checkInside)) {
+            isInsidePolygon(points, x, y)
+        } else {
+            isOnPolygon(points, x, y, precision)
         }
-        return false
     }
 
-    private fun checkInside(checkInside: CheckInside): Boolean {
+    private fun shouldCheckInside(checkInside: CheckInside): Boolean {
         return when (checkInside) {
             CheckInside.YES -> true
             CheckInside.NO -> false
@@ -77,6 +64,20 @@ data class Contour(val points: List<PointF>, val closed: Boolean) {
             y1 = y2
         }
         return count % 2 != 0
+    }
+
+    private fun isOnPolygon(points: List<PointF>, x: Float, y: Float, precision: Float): Boolean {
+        var x1 = points[0].x
+        var y1 = points[0].y
+        for (j in 1 until points.size) {
+            val x2 = points[j].x
+            val y2 = points[j].y
+            val dist = shortestDistanceToLineSegment(x, y, x1, y1, x2, y2)
+            if (dist <= precision) return true
+            x1 = x2
+            y1 = y2
+        }
+        return false
     }
 
     private fun shortestDistanceToLineSegment(

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("RCubicTo")
-internal class RCubicTo(
+internal data class RCubicTo(
     private val x1: Float,
     private val y1: Float,
     private val x2: Float,

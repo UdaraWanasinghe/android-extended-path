@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("LineTo")
-internal class LineTo(
+internal data class LineTo(
     private val x: Float,
     private val y: Float
 ) : Command {

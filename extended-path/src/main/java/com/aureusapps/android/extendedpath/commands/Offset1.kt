@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("Offset1")
-internal class Offset1(
+internal data class Offset1(
     private val dx: Float,
     private val dy: Float
 ) : Command {

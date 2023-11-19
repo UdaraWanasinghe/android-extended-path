@@ -34,10 +34,13 @@ class ExtendedPathInstrumentedTest {
         val path = ExtendedPath()
         path.moveTo(0f, 0f)
         path.lineTo(9f, 9f)
+
         var doIntersect = path.doIntersect(3f, 3f)
         assertTrue(doIntersect)
+
         doIntersect = path.doIntersect(11f, 11f)
         assertTrue(doIntersect)
+
         doIntersect = path.doIntersect(12f, 12f)
         assertFalse(doIntersect)
     }

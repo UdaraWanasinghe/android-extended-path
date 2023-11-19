@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("MoveTo")
-internal class MoveTo(
+internal data class MoveTo(
     private val x: Float,
     private val y: Float
 ) : Command {

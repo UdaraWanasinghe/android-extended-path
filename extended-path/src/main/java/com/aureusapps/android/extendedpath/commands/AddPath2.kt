@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("AddPath2")
-internal class AddPath2(
+internal data class AddPath2(
     private val path: ExtendedPath,
     private val matrix: MatrixAsFloatArray
 ) : Command {

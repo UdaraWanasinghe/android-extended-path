@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("IncReserve")
-internal class IncReserve(
+internal data class IncReserve(
     private val extraPtCount: Int
 ) : Command {
 

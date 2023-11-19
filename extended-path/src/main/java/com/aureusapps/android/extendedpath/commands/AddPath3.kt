@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("AddPath3")
-internal class AddPath3(
+internal data class AddPath3(
     private val path: ExtendedPath,
     private val dx: Float,
     private val dy: Float

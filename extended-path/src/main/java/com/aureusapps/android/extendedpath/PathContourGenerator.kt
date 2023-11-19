@@ -3,56 +3,45 @@ package com.aureusapps.android.extendedpath
 import android.graphics.Path
 import android.graphics.PathMeasure
 import android.graphics.PointF
-import com.aureusapps.android.extendedpath.commands.Command
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
-@Serializable
-abstract class BasePath : Path() {
+class PathContourGenerator(private val path: Path) {
 
-    protected val commands = mutableListOf<Command>()
+    private enum class ContourState {
+        UNCHANGED, CHANGED, RECREATE
+    }
+
+    private val contours = mutableListOf<Contour>()
+    private val measure = PathMeasure()
+    private var contourState = ContourState.RECREATE
+    private var lastContourIndex = 0
+    private var lastContourDistance = 0f
+
     var precision = 4f
         set(value) {
+            if (field == value) return
             field = value
             contourState = ContourState.RECREATE
             lastContourIndex = 0
             lastContourDistance = 0f
         }
 
-    @Transient
-    private val contours = mutableListOf<Contour>()
-
-    @Transient
-    private val measure = PathMeasure()
-
-    @Transient
-    private var contourState = ContourState.RECREATE
-
-    @Transient
-    private var lastContourIndex = 0
-
-    @Transient
-    private var lastContourDistance = 0f
-
     fun getContours(): List<Contour> {
         return when (contourState) {
-            ContourState.CHANGED -> {
-                createContours()
-            }
+            ContourState.CHANGED -> createContours()
+
             ContourState.RECREATE -> {
                 lastContourIndex = 0
                 lastContourDistance = 0f
                 contours.clear()
                 createContours()
             }
-            ContourState.UNCHANGED -> {
-                contours
-            }
+
+            ContourState.UNCHANGED -> contours
         }
     }
 
     private fun createContours(): List<Contour> {
-        measure.setPath(this, false)
+        measure.setPath(path, false)
         var contourIndex = -1
         var dis = lastContourDistance
         val pos = FloatArray(2)
@@ -76,24 +65,20 @@ abstract class BasePath : Path() {
             dis = 0f
         } while (measure.nextContour())
         lastContourIndex = contourIndex
-        flogContoursUnchanged()
+        flagContoursUnchanged()
         return contours
     }
 
-    private fun flogContoursUnchanged() {
+    private fun flagContoursUnchanged() {
         contourState = ContourState.UNCHANGED
     }
 
-    protected fun flagContoursChanged() {
+    fun flagContoursChanged() {
         contourState = ContourState.CHANGED
     }
 
-    protected fun flagContoursRecreate() {
+    fun flagContoursRecreate() {
         contourState = ContourState.RECREATE
-    }
-
-    protected enum class ContourState {
-        UNCHANGED, CHANGED, RECREATE
     }
 
 }

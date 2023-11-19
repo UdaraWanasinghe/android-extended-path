@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("ArcTo")
-internal class ArcTo(
+internal data class ArcTo(
     private val left: Float,
     private val top: Float,
     private val right: Float,

@@ -2,14 +2,41 @@ package com.aureusapps.android.extendedpath
 
 import android.graphics.Matrix
 import android.graphics.Path
-import com.aureusapps.android.extendedpath.commands.*
+import com.aureusapps.android.extendedpath.commands.AddArc
+import com.aureusapps.android.extendedpath.commands.AddCircle
+import com.aureusapps.android.extendedpath.commands.AddOval
+import com.aureusapps.android.extendedpath.commands.AddPath1
+import com.aureusapps.android.extendedpath.commands.AddPath2
+import com.aureusapps.android.extendedpath.commands.AddPath3
+import com.aureusapps.android.extendedpath.commands.AddRect
+import com.aureusapps.android.extendedpath.commands.AddRoundRect1
+import com.aureusapps.android.extendedpath.commands.AddRoundRect2
+import com.aureusapps.android.extendedpath.commands.ArcTo
+import com.aureusapps.android.extendedpath.commands.Close
+import com.aureusapps.android.extendedpath.commands.Command
+import com.aureusapps.android.extendedpath.commands.CubicTo
+import com.aureusapps.android.extendedpath.commands.IncReserve
+import com.aureusapps.android.extendedpath.commands.LineTo
+import com.aureusapps.android.extendedpath.commands.MoveTo
+import com.aureusapps.android.extendedpath.commands.Offset1
+import com.aureusapps.android.extendedpath.commands.Offset2
+import com.aureusapps.android.extendedpath.commands.QuadTo
+import com.aureusapps.android.extendedpath.commands.RCubicTo
+import com.aureusapps.android.extendedpath.commands.RLineTo
+import com.aureusapps.android.extendedpath.commands.RMoveTo
+import com.aureusapps.android.extendedpath.commands.RQuadTo
+import com.aureusapps.android.extendedpath.commands.SetFillType
+import com.aureusapps.android.extendedpath.commands.SetLastPoint
+import com.aureusapps.android.extendedpath.commands.ToggleInverseFillType
+import com.aureusapps.android.extendedpath.commands.Transform1
+import com.aureusapps.android.extendedpath.commands.Transform2
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.Transient
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @Serializable
-class ExtendedPath : BasePath() {
+class ExtendedPath : Path() {
 
     companion object {
         fun fromJson(json: String): ExtendedPath {
@@ -17,11 +44,16 @@ class ExtendedPath : BasePath() {
         }
     }
 
+    private val commands = mutableListOf<Command>()
+
+    @Transient
+    private val pathContourGenerator = PathContourGenerator(this)
+
     init {
-        initiatePath()
+        initPath()
     }
 
-    private fun initiatePath() {
+    private fun initPath() {
         if (commands.isNotEmpty()) {
             val p = Path()
             commands.forEach { it.execute(p) }
@@ -29,14 +61,12 @@ class ExtendedPath : BasePath() {
         }
     }
 
-    fun toJson(): String {
-        return Json.encodeToString(this)
-    }
+    fun getContours(): List<Contour> = pathContourGenerator.getContours()
 
     fun doIntersect(
         x: Float,
         y: Float,
-        precision: Float = this.precision,
+        precision: Float = pathContourGenerator.precision,
         checkInside: CheckInside = CheckInside.IF_CLOSED
     ): Boolean {
         val contours = getContours()
@@ -56,7 +86,7 @@ class ExtendedPath : BasePath() {
      */
     fun doIntersect(
         path: ExtendedPath,
-        precision: Float = this.precision,
+        precision: Float = pathContourGenerator.precision,
         checkInside: CheckInside = CheckInside.IF_CLOSED
     ): Boolean {
         val contours1 = getContours()
@@ -81,28 +111,32 @@ class ExtendedPath : BasePath() {
         return false
     }
 
+    fun toJson(): String {
+        return Json.encodeToString(this)
+    }
+
     override fun moveTo(x: Float, y: Float) {
         super.moveTo(x, y)
         commands.add(MoveTo(x, y))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun rMoveTo(dx: Float, dy: Float) {
         super.rMoveTo(dx, dy)
         commands.add(RMoveTo(dx, dy))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun lineTo(x: Float, y: Float) {
         super.lineTo(x, y)
         commands.add(LineTo(x, y))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun rLineTo(dx: Float, dy: Float) {
         super.rLineTo(dx, dy)
         commands.add(RLineTo(dx, dy))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun cubicTo(
@@ -115,7 +149,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.cubicTo(x1, y1, x2, y2, x3, y3)
         commands.add(CubicTo(x1, y1, x2, y2, x3, y3))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun rCubicTo(
@@ -128,7 +162,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.rCubicTo(x1, y1, x2, y2, x3, y3)
         commands.add(RCubicTo(x1, y1, x2, y2, x3, y3))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun addCircle(
@@ -139,7 +173,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.addCircle(x, y, radius, dir)
         commands.add(AddCircle(x, y, radius, dir))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun addRect(
@@ -151,7 +185,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.addRect(left, top, right, bottom, dir)
         commands.add(AddRect(left, top, right, bottom, dir))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun addRoundRect(
@@ -164,7 +198,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.addRoundRect(left, top, right, bottom, radii, dir)
         commands.add(AddRoundRect1(left, top, right, bottom, radii, dir))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun addRoundRect(
@@ -178,7 +212,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.addRoundRect(left, top, right, bottom, rx, ry, dir)
         commands.add(AddRoundRect2(left, top, right, bottom, rx, ry, dir))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun addArc(
@@ -198,7 +232,7 @@ class ExtendedPath : BasePath() {
             sweepAngle
         )
         commands.add(AddArc(left, top, right, bottom, startAngle, sweepAngle))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun arcTo(
@@ -220,7 +254,7 @@ class ExtendedPath : BasePath() {
             forceMoveTo
         )
         commands.add(ArcTo(left, top, right, bottom, startAngle, sweepAngle, forceMoveTo))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun addOval(
@@ -232,7 +266,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.addOval(left, top, right, bottom, dir)
         commands.add(AddOval(left, top, right, bottom, dir))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun quadTo(
@@ -243,7 +277,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.quadTo(x1, y1, x2, y2)
         commands.add(QuadTo(x1, y1, x2, y2))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun rQuadTo(
@@ -254,13 +288,13 @@ class ExtendedPath : BasePath() {
     ) {
         super.rQuadTo(dx1, dy1, dx2, dy2)
         commands.add(RQuadTo(dx1, dy1, dx2, dy2))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     fun addPath(src: ExtendedPath) {
         super.addPath(src)
         commands.add(AddPath1(src))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     fun addPath(
@@ -269,7 +303,7 @@ class ExtendedPath : BasePath() {
     ) {
         super.addPath(src, matrix)
         commands.add(AddPath2(src, matrix))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     fun addPath(
@@ -279,19 +313,19 @@ class ExtendedPath : BasePath() {
     ) {
         super.addPath(src, dx, dy)
         commands.add(AddPath3(src, dx, dy))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun offset(dx: Float, dy: Float) {
         super.offset(dx, dy)
         commands.add(Offset1(dx, dy))
-        flagContoursRecreate()
+        pathContourGenerator.flagContoursRecreate()
     }
 
     fun offset(dx: Float, dy: Float, dst: ExtendedPath?) {
         super.offset(dx, dy, dst)
         commands.add(Offset2(dx, dy, dst))
-        flagContoursRecreate()
+        pathContourGenerator.flagContoursRecreate()
     }
 
     override fun setFillType(ft: FillType) {
@@ -302,7 +336,7 @@ class ExtendedPath : BasePath() {
     override fun setLastPoint(dx: Float, dy: Float) {
         super.setLastPoint(dx, dy)
         commands.add(SetLastPoint(dx, dy))
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun incReserve(extraPtCount: Int) {
@@ -323,31 +357,31 @@ class ExtendedPath : BasePath() {
         } else {
             commands.add(Transform1(matrix))
         }
-        flagContoursRecreate()
+        pathContourGenerator.flagContoursRecreate()
     }
 
     fun transform(matrix: Matrix, dst: ExtendedPath?) {
         super.transform(matrix, dst)
         commands.add(Transform2(matrix, dst))
-        flagContoursRecreate()
+        pathContourGenerator.flagContoursRecreate()
     }
 
     override fun close() {
         super.close()
         commands.add(Close)
-        flagContoursChanged()
+        pathContourGenerator.flagContoursChanged()
     }
 
     override fun rewind() {
         super.rewind()
         commands.clear()
-        flagContoursRecreate()
+        pathContourGenerator.flagContoursRecreate()
     }
 
     override fun reset() {
         super.reset()
         commands.clear()
-        flagContoursRecreate()
+        pathContourGenerator.flagContoursRecreate()
     }
 
 }

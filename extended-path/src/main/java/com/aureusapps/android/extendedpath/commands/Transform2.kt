@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("Transform2")
-internal class Transform2(
+internal data class Transform2(
     private val matrix: MatrixAsFloatArray,
     private val dst: ExtendedPath?
 ) : Command {

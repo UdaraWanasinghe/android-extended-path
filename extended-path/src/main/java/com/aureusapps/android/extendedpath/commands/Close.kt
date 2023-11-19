@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("Close")
-internal object Close : Command {
+internal data object Close : Command {
 
     override fun execute(path: Path) {
         path.close()

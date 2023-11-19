@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("AddOval")
-internal class AddOval(
+internal data class AddOval(
     private val left: Float,
     private val top: Float,
     private val right: Float,

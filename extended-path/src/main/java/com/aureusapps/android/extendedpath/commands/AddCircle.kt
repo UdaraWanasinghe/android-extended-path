@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("AddCircle")
-internal class AddCircle(
+internal data class AddCircle(
     private val x: Float,
     private val y: Float,
     private val radius: Float,
