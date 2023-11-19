@@ -50,4 +50,25 @@ class ExtendedPathInstrumentedTest {
         assertFalse(path.doIntersect(anotherPath, 1f))
     }
 
+    @Test
+    fun testExtendedPathEquality() {
+        val path = ExtendedPath()
+        path.moveTo(0f, 0f)
+        path.lineTo(9f, 9f)
+
+        val otherPath = ExtendedPath()
+        otherPath.moveTo(0f, 0f)
+        otherPath.lineTo(9f, 9f)
+
+        assertEquals(path, otherPath)
+        assertTrue(path.isEquals(otherPath))
+
+        val anotherPath = ExtendedPath()
+        anotherPath.moveTo(0f, 9f)
+        anotherPath.lineTo(9f, 0f)
+
+        assertNotEquals(path, anotherPath)
+        assertFalse(path.isEquals(anotherPath))
+    }
+
 }

@@ -61,15 +61,14 @@ class ExtendedPath : Path() {
         }
     }
 
-    fun getContours(): List<Contour> = pathContourGenerator.getContours()
-
     fun doIntersect(
         x: Float,
         y: Float,
         precision: Float = pathContourGenerator.precision,
         checkInside: CheckInside = CheckInside.IF_CLOSED
     ): Boolean {
-        val contours = getContours()
+        pathContourGenerator.precision = precision
+        val contours = pathContourGenerator.getContours()
         for (contour in contours) {
             if (contour.doIntersect(x, y, precision, checkInside)) {
                 return true
@@ -89,8 +88,9 @@ class ExtendedPath : Path() {
         precision: Float = pathContourGenerator.precision,
         checkInside: CheckInside = CheckInside.IF_CLOSED
     ): Boolean {
-        val contours1 = getContours()
-        val contours2 = path.getContours()
+        pathContourGenerator.precision = precision
+        val contours1 = pathContourGenerator.getContours()
+        val contours2 = path.pathContourGenerator.getContours()
         contours1.forEach { contour1 ->
             contours2
                 .flatMap { contour2 ->
@@ -109,6 +109,20 @@ class ExtendedPath : Path() {
                 }
         }
         return false
+    }
+
+    fun isEquals(other: ExtendedPath, precision: Float = 1f): Boolean {
+        pathContourGenerator.precision = precision
+        other.pathContourGenerator.precision = precision
+        val contours = pathContourGenerator.getContours()
+        val otherContours = other.pathContourGenerator.getContours()
+        if (contours.size != otherContours.size) return false
+        if (contours.isEmpty()) return true
+        return contours.all { contour ->
+            otherContours.all { otherContour ->
+                contour.isEquals(otherContour, precision)
+            }
+        }
     }
 
     fun toJson(): String {
@@ -382,6 +396,19 @@ class ExtendedPath : Path() {
         super.reset()
         commands.clear()
         pathContourGenerator.flagContoursRecreate()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ExtendedPath
+
+        return commands == other.commands
+    }
+
+    override fun hashCode(): Int {
+        return commands.hashCode()
     }
 
 }
