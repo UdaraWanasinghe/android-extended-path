@@ -70,7 +70,7 @@ class ExtendedPath : Path() {
         checkInside: CheckInside = CheckInside.IF_CLOSED
     ): Boolean {
         pathContourGenerator.measureDistance = max(measureDistance, errorTolerance)
-        val contours = pathContourGenerator.getContours()
+        val contours = pathContourGenerator.getContours().asReversed()
         for (contour in contours) {
             if (contour.doIntersect(x, y, errorTolerance, checkInside)) {
                 return true
@@ -92,12 +92,12 @@ class ExtendedPath : Path() {
         checkInside: CheckInside = CheckInside.IF_CLOSED
     ): Boolean {
         pathContourGenerator.measureDistance = max(measureDistance, errorTolerance)
-        val contours1 = pathContourGenerator.getContours()
-        val contours2 = path.pathContourGenerator.getContours()
+        val contours1 = pathContourGenerator.getContours().asReversed()
+        val contours2 = path.pathContourGenerator.getContours().asReversed()
         contours1.forEach { contour1 ->
             contours2
                 .flatMap { contour2 ->
-                    contour2.points
+                    contour2.points.asReversed()
                 }
                 .forEach { point ->
                     if (contour1.doIntersect(

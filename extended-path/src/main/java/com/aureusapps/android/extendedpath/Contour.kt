@@ -131,9 +131,9 @@ data class Contour(val points: List<PointF>, val closed: Boolean) {
     ): Boolean {
         if (points.isEmpty()) return false
         return if (shouldCheckInside(checkInside)) {
-            isInsidePolygon(points, x, y)
+            isInsidePolygon(points.asReversed(), x, y)
         } else {
-            isOnPolygon(points, x, y, errorTolerance)
+            isOnPolygon(points.asReversed(), x, y, errorTolerance)
         }
     }
 
