@@ -34,6 +34,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlin.math.max
 
 @Serializable
 class ExtendedPath : Path() {
@@ -68,7 +69,7 @@ class ExtendedPath : Path() {
         measureDistance: Float = pathContourGenerator.measureDistance,
         checkInside: CheckInside = CheckInside.IF_CLOSED
     ): Boolean {
-        pathContourGenerator.measureDistance = measureDistance
+        pathContourGenerator.measureDistance = max(measureDistance, errorTolerance)
         val contours = pathContourGenerator.getContours()
         for (contour in contours) {
             if (contour.doIntersect(x, y, errorTolerance, checkInside)) {
@@ -90,7 +91,7 @@ class ExtendedPath : Path() {
         measureDistance: Float = pathContourGenerator.measureDistance,
         checkInside: CheckInside = CheckInside.IF_CLOSED
     ): Boolean {
-        pathContourGenerator.measureDistance = measureDistance
+        pathContourGenerator.measureDistance = max(measureDistance, errorTolerance)
         val contours1 = pathContourGenerator.getContours()
         val contours2 = path.pathContourGenerator.getContours()
         contours1.forEach { contour1 ->
@@ -113,16 +114,20 @@ class ExtendedPath : Path() {
         return false
     }
 
-    fun isEquals(other: ExtendedPath, precision: Float = 1f): Boolean {
-        pathContourGenerator.measureDistance = precision
-        other.pathContourGenerator.measureDistance = precision
+    fun isEquals(
+        other: ExtendedPath,
+        errorTolerance: Float = 4f,
+        measureDistance: Float = pathContourGenerator.measureDistance
+    ): Boolean {
+        pathContourGenerator.measureDistance = max(measureDistance, errorTolerance)
+        other.pathContourGenerator.measureDistance = max(measureDistance, errorTolerance)
         val contours = pathContourGenerator.getContours()
         val otherContours = other.pathContourGenerator.getContours()
         if (contours.size != otherContours.size) return false
         if (contours.isEmpty()) return true
         return contours.all { contour ->
             otherContours.all { otherContour ->
-                contour.isEquals(otherContour, precision)
+                contour.isEquals(otherContour, errorTolerance)
             }
         }
     }
