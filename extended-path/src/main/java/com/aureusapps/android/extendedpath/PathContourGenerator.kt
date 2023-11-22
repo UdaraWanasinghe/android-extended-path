@@ -16,13 +16,11 @@ class PathContourGenerator(private val path: Path) {
     private var lastContourIndex = 0
     private var lastContourDistance = 0f
 
-    var precision = 4f
+    var measureDistance = 4f
         set(value) {
             if (field == value) return
             field = value
             contourState = ContourState.RECREATE
-            lastContourIndex = 0
-            lastContourDistance = 0f
         }
 
     fun getContours(): List<Contour> {
@@ -58,7 +56,7 @@ class PathContourGenerator(private val path: Path) {
             while (dis <= len) {
                 measure.getPosTan(dis, pos, null)
                 points.add(PointF(pos[0], pos[1]))
-                dis += precision
+                dis += measureDistance
             }
             contours.add(Contour(points, measure.isClosed))
             lastContourDistance = dis

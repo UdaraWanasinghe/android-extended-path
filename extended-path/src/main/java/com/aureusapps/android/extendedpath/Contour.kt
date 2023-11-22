@@ -16,7 +16,7 @@ data class Contour(val points: List<PointF>, val closed: Boolean) {
         private fun arePointsEqual(
             points1: List<PointF>,
             points2: List<PointF>,
-            precision: Float,
+            errorTolerance: Float,
             exit: Boolean = false
         ): Boolean {
             if (points1.size != points2.size) return false
@@ -24,9 +24,9 @@ data class Contour(val points: List<PointF>, val closed: Boolean) {
             for (i in points1.indices) {
                 val p1 = points1[i]
                 val p2 = points2[i]
-                if (distanceBetweenPoints(p1, p2) > precision) {
+                if (distanceBetweenPoints(p1, p2) > errorTolerance) {
                     if (exit) return false
-                    return arePointsEqual(points1.asReversed(), points2, precision, true)
+                    return arePointsEqual(points1.asReversed(), points2, errorTolerance, true)
                 }
             }
             return true
@@ -61,7 +61,7 @@ data class Contour(val points: List<PointF>, val closed: Boolean) {
             points: List<PointF>,
             x: Float,
             y: Float,
-            precision: Float
+            errorTolerance: Float
         ): Boolean {
             var x1 = points[0].x
             var y1 = points[0].y
@@ -69,7 +69,7 @@ data class Contour(val points: List<PointF>, val closed: Boolean) {
                 val x2 = points[j].x
                 val y2 = points[j].y
                 val dist = shortestDistanceToLineSegment(x, y, x1, y1, x2, y2)
-                if (dist <= precision) return true
+                if (dist <= errorTolerance) return true
                 x1 = x2
                 y1 = y2
             }
@@ -116,7 +116,7 @@ data class Contour(val points: List<PointF>, val closed: Boolean) {
      *
      * @param x X coordinate of the point.
      * @param y Y coordinate of the point.
-     * @param precision The allowed error radius.
+     * @param errorTolerance The allowed error radius.
      * @param checkInside If [CheckInside.YES], always checks inside.
      * If [CheckInside.NO], inside is not checked.
      * If [CheckInside.IF_CLOSED] checked only if path is closed.
@@ -126,19 +126,19 @@ data class Contour(val points: List<PointF>, val closed: Boolean) {
     fun doIntersect(
         x: Float,
         y: Float,
-        precision: Float,
+        errorTolerance: Float,
         checkInside: CheckInside
     ): Boolean {
         if (points.isEmpty()) return false
         return if (shouldCheckInside(checkInside)) {
             isInsidePolygon(points, x, y)
         } else {
-            isOnPolygon(points, x, y, precision)
+            isOnPolygon(points, x, y, errorTolerance)
         }
     }
 
-    fun isEquals(contour: Contour, precision: Float): Boolean {
-        return arePointsEqual(points, contour.points, precision)
+    fun isEquals(contour: Contour, errorTolerance: Float): Boolean {
+        return arePointsEqual(points, contour.points, errorTolerance)
     }
 
     private fun shouldCheckInside(checkInside: CheckInside): Boolean {

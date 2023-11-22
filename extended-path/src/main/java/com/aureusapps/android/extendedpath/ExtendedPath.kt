@@ -64,13 +64,14 @@ class ExtendedPath : Path() {
     fun doIntersect(
         x: Float,
         y: Float,
-        precision: Float = pathContourGenerator.precision,
+        errorTolerance: Float = 4f,
+        measureDistance: Float = pathContourGenerator.measureDistance,
         checkInside: CheckInside = CheckInside.IF_CLOSED
     ): Boolean {
-        pathContourGenerator.precision = precision
+        pathContourGenerator.measureDistance = measureDistance
         val contours = pathContourGenerator.getContours()
         for (contour in contours) {
-            if (contour.doIntersect(x, y, precision, checkInside)) {
+            if (contour.doIntersect(x, y, errorTolerance, checkInside)) {
                 return true
             }
         }
@@ -81,14 +82,15 @@ class ExtendedPath : Path() {
      * Returns if the given path intersects with this path.
      *
      * @param path The path to check if intersecting.
-     * @param precision The allowed error radius.
+     * @param errorTolerance The allowed error radius.
      */
     fun doIntersect(
         path: ExtendedPath,
-        precision: Float = pathContourGenerator.precision,
+        errorTolerance: Float = 4f,
+        measureDistance: Float = pathContourGenerator.measureDistance,
         checkInside: CheckInside = CheckInside.IF_CLOSED
     ): Boolean {
-        pathContourGenerator.precision = precision
+        pathContourGenerator.measureDistance = measureDistance
         val contours1 = pathContourGenerator.getContours()
         val contours2 = path.pathContourGenerator.getContours()
         contours1.forEach { contour1 ->
@@ -100,7 +102,7 @@ class ExtendedPath : Path() {
                     if (contour1.doIntersect(
                             point.x,
                             point.y,
-                            precision,
+                            errorTolerance,
                             checkInside
                         )
                     ) {
@@ -112,8 +114,8 @@ class ExtendedPath : Path() {
     }
 
     fun isEquals(other: ExtendedPath, precision: Float = 1f): Boolean {
-        pathContourGenerator.precision = precision
-        other.pathContourGenerator.precision = precision
+        pathContourGenerator.measureDistance = precision
+        other.pathContourGenerator.measureDistance = precision
         val contours = pathContourGenerator.getContours()
         val otherContours = other.pathContourGenerator.getContours()
         if (contours.size != otherContours.size) return false
