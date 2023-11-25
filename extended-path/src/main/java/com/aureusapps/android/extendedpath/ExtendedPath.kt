@@ -67,12 +67,13 @@ class ExtendedPath : Path() {
         y: Float,
         errorTolerance: Float = 4f,
         measureDistance: Float = pathContourGenerator.measureDistance,
-        checkInside: CheckInside = CheckInside.IF_CLOSED
+        checkInside: CheckInside = CheckInside.IF_CLOSED,
+        maxDistance: Float = Float.MAX_VALUE
     ): Boolean {
         pathContourGenerator.measureDistance = max(measureDistance, errorTolerance)
         val contours = pathContourGenerator.getContours().asReversed()
         for (contour in contours) {
-            if (contour.doIntersect(x, y, errorTolerance, checkInside)) {
+            if (contour.doIntersect(x, y, errorTolerance, checkInside, maxDistance)) {
                 return true
             }
         }
@@ -84,12 +85,16 @@ class ExtendedPath : Path() {
      *
      * @param path The path to check if intersecting.
      * @param errorTolerance The allowed error radius.
+     * @param measureDistance Distance between two consecutive contour points.
+     * @param checkInside Whether to check if the path is inside the polygon.
+     * @param maxDistance Max distance to check along this path.
      */
     fun doIntersect(
         path: ExtendedPath,
         errorTolerance: Float = 4f,
         measureDistance: Float = pathContourGenerator.measureDistance,
-        checkInside: CheckInside = CheckInside.IF_CLOSED
+        checkInside: CheckInside = CheckInside.IF_CLOSED,
+        maxDistance: Float = Float.MAX_VALUE
     ): Boolean {
         pathContourGenerator.measureDistance = max(measureDistance, errorTolerance)
         val contours1 = pathContourGenerator.getContours().asReversed()
@@ -104,7 +109,8 @@ class ExtendedPath : Path() {
                             point.x,
                             point.y,
                             errorTolerance,
-                            checkInside
+                            checkInside,
+                            maxDistance
                         )
                     ) {
                         return true

@@ -1,5 +1,6 @@
 package com.aureusapps.android.extendedpath
 
+import kotlin.math.abs
 import kotlin.math.hypot
 import kotlin.math.max
 import kotlin.math.min
@@ -60,17 +61,25 @@ data class Contour(val points: List<Point>, val closed: Boolean) {
             points: List<Point>,
             x: Float,
             y: Float,
-            errorTolerance: Float
+            errorTolerance: Float,
+            maxDistance: Float
         ): Boolean {
-            var x1 = points[0].x
-            var y1 = points[0].y
+            var point = points[0]
+            var x1 = point.x
+            var y1 = point.y
+            var totDist = 0f
+            var lastDist = point.distance
             for (j in 1 until points.size) {
-                val x2 = points[j].x
-                val y2 = points[j].y
+                point = points[j]
+                val x2 = point.x
+                val y2 = point.y
                 val dist = shortestDistanceToLineSegment(x, y, x1, y1, x2, y2)
                 if (dist <= errorTolerance) return true
                 x1 = x2
                 y1 = y2
+                totDist += abs(point.distance - lastDist)
+                lastDist = point.distance
+                if (totDist > maxDistance) break
             }
             return false
         }
@@ -126,13 +135,14 @@ data class Contour(val points: List<Point>, val closed: Boolean) {
         x: Float,
         y: Float,
         errorTolerance: Float,
-        checkInside: CheckInside
+        checkInside: CheckInside,
+        maxDistance: Float
     ): Boolean {
         if (points.isEmpty()) return false
         return if (shouldCheckInside(checkInside)) {
             isInsidePolygon(points.asReversed(), x, y)
         } else {
-            isOnPolygon(points.asReversed(), x, y, errorTolerance)
+            isOnPolygon(points.asReversed(), x, y, errorTolerance, maxDistance)
         }
     }
 
