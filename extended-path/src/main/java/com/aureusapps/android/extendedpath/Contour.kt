@@ -1,21 +1,20 @@
 package com.aureusapps.android.extendedpath
 
-import android.graphics.PointF
 import kotlin.math.hypot
 import kotlin.math.max
 import kotlin.math.min
 
-data class Contour(val points: List<PointF>, val closed: Boolean) {
+data class Contour(val points: List<Point>, val closed: Boolean) {
 
     companion object {
 
-        private fun distanceBetweenPoints(point1: PointF, point2: PointF): Float {
+        private fun distanceBetweenPoints(point1: Point, point2: Point): Float {
             return hypot(point1.x - point2.x, point1.y - point2.y)
         }
 
         private fun arePointsEqual(
-            points1: List<PointF>,
-            points2: List<PointF>,
+            points1: List<Point>,
+            points2: List<Point>,
             errorTolerance: Float,
             exit: Boolean = false
         ): Boolean {
@@ -32,7 +31,7 @@ data class Contour(val points: List<PointF>, val closed: Boolean) {
             return true
         }
 
-        private fun isInsidePolygon(points: List<PointF>, x: Float, y: Float): Boolean {
+        private fun isInsidePolygon(points: List<Point>, x: Float, y: Float): Boolean {
             var x1 = points[points.size - 1].x
             var y1 = points[points.size - 1].y
             var count = 0
@@ -58,7 +57,7 @@ data class Contour(val points: List<PointF>, val closed: Boolean) {
         }
 
         private fun isOnPolygon(
-            points: List<PointF>,
+            points: List<Point>,
             x: Float,
             y: Float,
             errorTolerance: Float

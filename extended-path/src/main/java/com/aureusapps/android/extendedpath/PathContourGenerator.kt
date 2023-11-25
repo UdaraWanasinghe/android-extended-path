@@ -2,7 +2,6 @@ package com.aureusapps.android.extendedpath
 
 import android.graphics.Path
 import android.graphics.PathMeasure
-import android.graphics.PointF
 
 class PathContourGenerator(private val path: Path) {
 
@@ -50,12 +49,12 @@ class PathContourGenerator(private val path: Path) {
             val points = if (dis == 0f) {
                 mutableListOf()
             } else {
-                contours.removeLast().points as MutableList<PointF>
+                contours.removeLast().points as MutableList<Point>
             }
             val len = measure.length
             while (dis <= len) {
                 measure.getPosTan(dis, pos, null)
-                points.add(PointF(pos[0], pos[1]))
+                points.add(Point(pos[0], pos[1], dis))
                 dis += measureDistance
             }
             contours.add(Contour(points, measure.isClosed))
