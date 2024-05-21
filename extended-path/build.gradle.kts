@@ -1,6 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 import com.aureusapps.gradle.PublishLibraryConstants.GROUP_ID
+import com.aureusapps.gradle.PublishLibraryConstants.VERSION_NAME
 
 plugins {
     id("com.android.library")
@@ -11,7 +12,8 @@ plugins {
 }
 
 class Props(project: Project) {
-    val groupId = project.findProperty(GROUP_ID).toString()
+    val groupId = project.findProperty(GROUP_ID) as String
+    val versionName = project.findProperty(VERSION_NAME) as String
 }
 
 val props = Props(project)
@@ -37,12 +39,11 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = "17"
     }
     publishing {
         singleVariant("release") {
             withSourcesJar()
-            withJavadocJar()
         }
     }
 }
@@ -50,7 +51,7 @@ android {
 publishLibrary {
     groupId.set(props.groupId)
     artifactId.set("extended-path")
-    versionName.set("1.0.0")
+    versionName.set(props.versionName)
     libName.set("ExtendedPath")
     libDescription.set("Android graphics path with extended functionalities.")
     libUrl.set("https://github.com/UdaraWanasinghe/android-extended-path")
@@ -64,14 +65,9 @@ publishLibrary {
 }
 
 dependencies {
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.constraintlayout)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.serialization.json)
 
-    testImplementation(libs.junit)
-
-    androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }
