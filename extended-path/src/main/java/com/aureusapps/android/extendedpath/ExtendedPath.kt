@@ -37,15 +37,14 @@ import kotlinx.serialization.json.Json
 import kotlin.math.max
 
 @Serializable
-class ExtendedPath : Path() {
-
+class ExtendedPath private constructor(
+    private val commands: MutableList<Command>
+) : Path() {
     companion object {
         fun fromJson(json: String): ExtendedPath {
             return Json.decodeFromString(json)
         }
     }
-
-    private val commands = mutableListOf<Command>()
 
     @Transient
     private val pathContourGenerator = PathContourGenerator(this)
@@ -53,6 +52,10 @@ class ExtendedPath : Path() {
     init {
         initPath()
     }
+
+    constructor() : this(mutableListOf())
+
+    constructor(path: ExtendedPath) : this(path.commands.toMutableList())
 
     private fun initPath() {
         if (commands.isNotEmpty()) {
