@@ -14,7 +14,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath("com.aureusapps.gradle:plugin-utils:1.0.0")
+        classpath("com.aureusapps.gradle:plugin-utils:1.0.1")
     }
 }
 dependencyResolutionManagement {
