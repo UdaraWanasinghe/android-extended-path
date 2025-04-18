@@ -5,8 +5,8 @@ import com.aureusapps.gradle.PublishLibraryConstants.VERSION_NAME
 
 loadLocalProperties(project)
 project.extra[GROUP_ID] = "com.aureusapps.android"
-project.extra[VERSION_CODE] = 3
-project.extra[VERSION_NAME] = "1.0.2"
+project.extra[VERSION_CODE] = 4
+project.extra[VERSION_NAME] = "1.0.3"
 
 plugins {
     alias(libs.plugins.com.android.application) apply false

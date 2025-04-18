@@ -8,7 +8,7 @@ Android graphics path with extended functionalities.
 
 ```kotlin
 dependencies {
-    implementation("com.aureusapps.android:extended-path:1.0.2")
+    implementation("com.aureusapps.android:extended-path:1.0.3")
 }
 ```
 
