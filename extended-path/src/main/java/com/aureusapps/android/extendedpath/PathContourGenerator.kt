@@ -49,7 +49,7 @@ class PathContourGenerator(private val path: Path) {
             val points = if (dis == 0f) {
                 mutableListOf()
             } else {
-                contours.removeLast().points as MutableList<Point>
+                contours.removeAt(contours.lastIndex).points as MutableList<Point>
             }
             val len = measure.length
             while (dis <= len) {
